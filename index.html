@@ -1,369 +1,347 @@
-
-
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Class Management System</title>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap');
 
-    <title> Share Flex message (เวอร์ชั่นปันสุข) </title>
-    <link rel="shortcut icon" href="https://developers.line.biz/console/favicon.ico">
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-      crossorigin="anonymous"></script>
-    <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-  <!-- MDB -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css" rel="stylesheet" />
-    
-    
-      <link href='https://fonts.googleapis.com/css?family=Kanit|Niramit|Pattaya|Prompt|Sarabun|Sriracha|Questrial|Mitr|Mali|Itim' rel='stylesheet' type='text/css'>
-      <script src="https://kit.fontawesome.com/ad42651166.js" crossorigin="anonymous"></script>
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
-      rel="stylesheet"integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
-      crossorigin="anonymous"/>
-
-
-<link href="https://cdn.jsdelivr.net/gh/projectwebpp/npn/mdb.min.css" rel="stylesheet">
-<link href="/Flex-to-html-Share/style.css" rel="stylesheet" type="text/css" />
-<link href="/Flex-to-html-Share/flex2html.css" rel="stylesheet" type="text/css" />
- <script src="/Flex-to-html-Share/flex2html.js"></script>
-
-  </head>
-  <body onload="myFunction()">
-    <div id="text"></div>
-      <div class="row justify-content-center">
-        <div class="col text-center ">
-            <div class="p-3 mb-2 bg-primary text-white fixed-top"><i class="fa fa-share" aria-hidden="true"></i>ระบบส่งข่าวสารผ่านไลน์ ด้วย FlexMessage (เวอร์ชั่นปันสุข)</div>
-            <br><br>
-          <h3 class="text-primary fw-bolder"></h3><br>
-          <img id="pictureUrl" class="img-circle" alt="Cinque Terre" width="50" height="50"> 
-          <p id="userId"></p>
-          <center><p id="displayName"></p></center>
-          <p id="statusMessage"></p>
-          <p id="getDecodedIDToken"></p>
-          <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-          <script>
-            function runApp() {
-              liff.getProfile().then(profile => {
-                document.getElementById("pictureUrl").src = profile.pictureUrl;  // %u0E41%u0E2A%u0E14%u0E07%u0E23%u0E39%u0E1B Profile %u0E17%u0E35%u0E48%u0E14%u0E36%u0E07%u0E21%u0E32
-                //document.getElementById("userId").innerHTML = '<b>UserId:</b> ' + profile.userId; 
-                document.getElementById("displayName").innerHTML = '<b>สวัสดี:</b> ' + profile.displayName; // %u0E41%u0E2A%u0E14%u0E07%u0E0A%u0E37%u0E48%u0E2D Line %u0E02%u0E2D%u0E07%u0E1C%u0E39%u0E49%u0E43%u0E0A%u0E49
-                //document.getElementById("statusMessage").innerHTML = '<b>StatusMessage:</b> ' + profile.statusMessage;  // %u0E41%u0E2A%u0E14%u0E07%u0E2A%u0E16%u0E32%u0E19%u0E30%u0E02%u0E2D%u0E07%u0E1C%u0E39%u0E49%u0E43%u0E0A%u0E49 Line
-                //document.getElementById("getDecodedIDToken").innerHTML = '<b>Email:</b> ' + liff.getDecodedIDToken().email;
-              }).catch(err => console.error(err));
-            }
-            liff.init({ liffId: "2005615503-drRxpq86" }, () => { // เปลี่ยน LIFF ID 
-              if (liff.isLoggedIn()) {
-                runApp()
-              } else {
-                liff.login();
-              }
-            }, err => console.error(err.code, error.message));
-        
-        // logout
-            const accessToken = liff.getAccessToken();
-        if (accessToken) {
-          fetch("https://api...", {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`
-            }
-            //...
-          });
+        :root {
+            --primary-color: #00c8ff;
+            --secondary-color: #0080ff;
+            --bg-color: #0f172a;
+            --text-color: #e2e8f0;
+            --container-bg: #1e293b;
+            --input-bg: #334155;
+            --border-color: #475569;
         }
-          </script>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Prompt', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 200, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 20%);
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 2.5rem;
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+            font-size: 2rem;
+        }
+
+        .lead {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #94a3b8;
+            font-weight: 300;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--primary-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            color: var(--bg-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 6px rgba(0, 200, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 200, 255, 0.4);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        #previewContainer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        #bubblePreview {
+            max-width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 200, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #bubbleContent {
+            padding: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .user-info img {
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+        }
+
+        .user-info p {
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+        }
+        #flex1 {
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+    <link href="/Flex-to-html-Share/flex2html.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="container">
+        <div class="user-info">
+            <img id="pictureUrl" alt="User Profile" width="80" height="80"> 
+            <p id="displayName"></p>
         </div>
-      </div>
+
+        <h2>Advanced Class Management System</h2>
+        <p class="lead">เลือกกลุ่มและข้อความที่ต้องการได้เลยครับ</p>
+        
+        <div class="form-group">
+            <label for="groupSelect">เลือกหัวข้อกลุ่มที่ต้องการ:</label>
+            <select class="form-control" id="groupSelect">
+                <option value="-1" selected>-- เลือกกลุ่ม --</option>
+                <option value="1">ONLINE</option>
+                <option value="2">TTS(จับมือทำ)</option>
+                <option value="3">ข้อมูลเพิ่มเติมอื่นๆ</option>
+                <option value="4">ข้อมูลพี่เลี้ยง</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="flexSelect">เลือกข้อความที่จะส่ง:</label>
+            <select class="form-control" id="flexSelect" disabled>
+                <option value="-1" selected>-- เลือกข้อความ --</option>
+            </select>
+        </div>
+        
+        <div id="previewContainer" style="display: none;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Flex Message Preview:</h3>
+            <div id="flex1"></div>
+        </div>
+        
+        <div class="button-container">
+            <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
+        </div>
     </div>
 
-    <script
-      charset="utf-8"
-      src="https://static.line-scdn.net/liff/edge/2/sdk.js"
-    ></script>
+    <script src="/Flex-to-html-Share/script.js"></script>
+    <script src="/Flex-to-html-Share/flex2html.js"></script>
 
     <script>
-      function process() {
-        let input = document.getElementById("flexjson").value;
-        let altText = document.getElementById("altText").value;
-        let displayName = document.getElementById("displayName").value;
-        let output;
-        let isFlex = false;
-        try {
-          let flex = JSON.parse(input);
-          output = flex;
-          isFlex = true;
-        } catch (e) {
-          output = input;
-          isFlex = false;
-        }
-        sendTemplatFlex(output, isFlex,altText,);
-      }
-    </script>
-    <script>
-      (async () => {
-        let liffId = "2005615503-drRxpq86"; 
-        await liff.init({ liffId: liffId });
-        liff.ready.then(() => {
-          if (!liff.isLoggedIn()) {
-            liff.login();
-          }
+    const LIFF_ID = "2005615503-drRxpq86"; // แทนที่ด้วย LIFF ID ของคุณ
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRVB2GDss-Zo9jaRZfSR0o8AeniyG9jv9EnJ95pXgKzsNEd0zQQlmnj4qj-WmPaPvSIg/exec"; // แทนที่ด้วย URL ของ Apps Script ที่เผยแพร่
+    
+    let flexMessages = {};
+
+    // Initialize LIFF
+    liff.init({ liffId: LIFF_ID })
+        .then(() => {
+            console.log("LIFF Initialized");
+            if (liff.isLoggedIn()) {
+                runApp();
+            } else {
+                liff.login();
+            }
+        })
+        .catch((err) => {
+            console.log("LIFF Initialization failed:", err);
         });
-      })();
 
-      function setCredit(message) {
-        if (message.footer?.contents?.length > 0) {
-          let length = message.footer?.contents.length;
-          if (message.footer?.contents[length - 1]?.type == "spacer") {
-            message.footer.contents.push("Developed by Ai Aekket Team");
-            length++
-            message.footer.contents[length - 1] =
-              message.footer.contents[length - 2];
-            message.footer.contents[length - 2] = {
-              type: "text",
-              text: "Developed by Ai Aekket Team",
-              weight: "bold",
-              align: "center",
-              size: "10px",
-              decoration: "none",
-              color: "#3366FF"
-            };
-          } else {
-            message.footer?.contents.push({
-              type: "text",
-              text: "Developed by Ai Aekket Team",
-              weight: "bold",
-              align: "center",
-              decoration: "none",
-              size: "10px",
-              color: "#3366FF",
-              adjustMode: "shrink-to-fit"
+    function runApp() {
+        liff.getProfile().then(profile => {
+            document.getElementById("pictureUrl").src = profile.pictureUrl;
+            document.getElementById("displayName").innerHTML = '<b>ยินดีต้อนรับคุณ:</b> ' + profile.displayName;
+        }).catch(err => console.error(err));
+
+        fetchFlexMessages(); // Load Flex Messages after LIFF is initialized
+    }
+
+    function fetchFlexMessages() {
+        fetch(APPS_SCRIPT_URL)
+            .then(response => response.json())
+            .then(data => {
+                flexMessages = data;
+                console.log("Fetched Flex Messages:", flexMessages);
+                document.getElementById('groupSelect').disabled = false;
+                document.getElementById('groupSelect').dispatchEvent(new Event('change'));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
             });
-          }
-        } else {
-          message.footer = {
-            type: "box",
-            layout: "vertical",
-            spacing: "sm",
-            contents: [
-              {
-                type: "text",
-                text: "Developed by Ai Aekket Team",
-                weight: "bold",
-                align: "center",
-                decoration: "none",
-                size: "10px",
-                color: "#3366FF",
-                adjustMode: "shrink-to-fit"
-              }
-            ],
-            flex: 0
-          };
-        }
-        return message;
-      }
+    }
 
-      async function sendTemplatFlex(output, isFlex,altText) {
-        method = "share";
-        let message;
-        if (isFlex) {
-          if (output.type != "flex") {
-            message = {
-              type: "flex",
-              altText: altText,
-              contents: output
-            };
-            if (message.contents.type == "carousel") {
-              message.contents.contents.map(bubble => setCredit(bubble));
+    document.getElementById('groupSelect').addEventListener('change', () => {
+        const selectedGroup = document.getElementById('groupSelect').value;
+        const flexSelect = document.getElementById('flexSelect');
+        flexSelect.innerHTML = '<option value="-1" selected>-- เลือกข้อความ --</option>';
+
+        if (selectedGroup > 0) {
+            const groupMessages = flexMessages['group' + selectedGroup] || [];
+            groupMessages.forEach((flexMessage, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.text = `${flexMessage.id}: ${flexMessage.altText}`;
+                flexSelect.add(option);
+            });
+            flexSelect.disabled = false;
+        } else {
+            flexSelect.disabled = true;
+            document.getElementById('previewContainer').style.display = 'none';
+        }
+    });
+
+    document.getElementById('flexSelect').addEventListener('change', updatePreview);
+
+    function updatePreview() {
+        const selectedGroup = document.getElementById('groupSelect').value;
+        const selectedIndex = document.getElementById('flexSelect').value;
+        const previewContainer = document.getElementById('previewContainer');
+        const shareBtn = document.getElementById('shareBtn');
+
+        if (selectedIndex >= 0) {
+            const groupMessages = flexMessages['group' + selectedGroup] || [];
+            const flexMessage = groupMessages[selectedIndex];
+            if (flexMessage && flexMessage.contents) {
+                document.getElementById('flexjson').value = JSON.stringify(flexMessage.contents, null, 2);
+                previewContainer.style.display = 'block';
+                myFunction(); // ใช้ฟังก์ชัน myFunction() เพื่อแสดงตัวอย่าง
+                shareBtn.disabled = false;
             } else {
-              message.contents = setCredit(message.contents);
+                previewContainer.style.display = 'none';
+                shareBtn.disabled = true;
             }
-          } else {
-            message = `${output}\n\nDeveloped by Ai Aekket Team`;
-          }
         } else {
-          message = {
-            type: "text",
-            text: `${output}\n\nDeveloped by Ai Aekket Team`
-          };
+            previewContainer.style.display = 'none';
+            shareBtn.disabled = true;
         }
-        //console.log(message);
-        liff.ready.then(() => {
-          if (!liff.isInClient()) {
-            if (!liff.isLoggedIn()) {
-              liff.login();
-            } else {
-              if (liff.isApiAvailable("shareTargetPicker")) {
-                liff.shareTargetPicker([message]).then(result => {
-                  if (result) {                
-                    Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'ส่งข้อความเรียบร้อยแล้ว',
-                    showConfirmButton: false,
-                    timer: 1500
-                    })
-                    liff.closeWindow();
-                  } else {              
-                    const [majorVer, minorVer, patchVer] = (
-                      liff.getLineVersion() || ""
-                    ).split(".");
-               
-                    if (minorVer === undefined) {
-                    Swal.fire({
-                    position: 'top-end',
-                    icon: 'warning',
-                    title: 'ยกเลิกการส่งข้อความเรียบร้อยแล้ว',
-                    showConfirmButton: false,
-                     timer: 1500
-                    })
-                      return;
-                    }
+    }
 
-                    if (
-                      parseInt(majorVer) >= 10 &&
-                      parseInt(minorVer) >= 10 &&
-                      parseInt(patchVer) > 0
-                    ) {
-
-                    Swal.fire({
-                    position: 'top-end',
-                    icon: 'warning',
-                    title: 'ยกเลิกการส่งข้อความเรียบร้อยแล้ว',
-                    showConfirmButton: false,
-                     timer: 1500
-                    })
-                    }
-                  }
+    document.getElementById('shareBtn').addEventListener('click', () => {
+        const selectedGroup = document.getElementById('groupSelect').value;
+        const selectedIndex = document.getElementById('flexSelect').value;
+        if (selectedIndex >= 0) {
+            const groupMessages = flexMessages['group' + selectedGroup] || [];
+            const flexMessage = groupMessages[selectedIndex];
+            if (flexMessage && flexMessage.contents) {
+                liff.shareTargetPicker([{
+                    type: 'flex',
+                    altText: flexMessage.altText,
+                    contents: flexMessage.contents
+                }])
+                .then(() => {
+                    console.log("Message shared");
+                })
+                .catch(error => {
+                    console.error("Error sharing message:", error);
+                    alert('ไม่สามารถแชร์ข้อความได้');
                 });
-              }
+            } else {
+                alert('ข้อความที่เลือกไม่ถูกต้อง');
             }
-          } else {
-            if (liff.isApiAvailable("shareTargetPicker")) {
-              liff.shareTargetPicker([message]).then(result => {
-                if (result) {
-
-                 Swal.fire({
-                    position: 'top-end',
-                    icon: 'success',
-                    title: 'ส่งข้อความเรียบร้อยแล้ว',
-                    showConfirmButton: false,
-                    timer: 1500
-                    })
-                  liff.closeWindow();
-                } else {
-             
-                  const [majorVer, minorVer, patchVer] = (
-                    liff.getLineVersion() || ""
-                  ).split(".");
-
-               
-                  if (minorVer === undefined) {
-                
-                   Swal.fire({
-                    position: 'top-end',
-                    icon: 'warning',
-                    title: 'ส่งข้อความเรียบร้อยแล้ว',
-                    showConfirmButton: false,
-                    timer: 1500
-                    })
-                    return;
-                  }
-
-              
-                  if (
-                    parseInt(majorVer) >= 10 &&
-                    parseInt(minorVer) >= 10 &&
-                    parseInt(patchVer) > 0
-                  ) {
-
-                    Swal.fire({
-                    position: 'top-end',
-                    icon: 'warning',
-                    title: 'ยกเลิกการส่งข้อความเรียบร้อยแล้ว',
-                    showConfirmButton: false,
-                     timer: 1500
-})
-                  }
-                }
-              });
-            }
-          }
-        });
-      }
-    </script>
-      <div class="row">
-        <div class="column">
-          <form>
-            <div class="container">
-              <!-- <label for="flexid"><b>Flex ID</b></label><br>
-              <input id="flexid" type="text"  class="form-control" placeholder="Insert Flex ID" name="flexid" maxlength="20"><br><br> -->
-              <label for="altText"><b>altText</b></label><br>
-              <input id="altText" type="text"  class="form-control" placeholder="Insert altText" name="altText" maxlength="20"><br><br>
-
-              <label for="flexjson"><b>Flex Json</b></label><br>
-              <a class="btn btn-outline-danger mt-2 mb-2" href="https://developers.line.biz/flex-simulator/" target="_blank" role="button">ออกแบบFlexJson</a>
-               <span class="badge rounded-pill bg-danger" type="button" onclick="resetJson()">ลบโค๊ด Json</span>
-  <span type="button" class="badge rounded-pill bg-primary" onclick="paste()">วาง Json</span>
-   <span type="button" class="badge rounded-pill bg-success" onclick="enableInputflex()" id="unlock">พิมพ์โค๊ดJsonเอง</span>
-  <span type="button" class="badge rounded-pill bg-secondary" onclick="lockinput()" id="lock" style="display: none;">ล็อค</span>
-              <textarea id="flexjson"  class="form-control"name="flexjson" rows="20" cols="50" onchange="myFunction()" readonly>{
-          "type": "bubble",
-          "body": {
-            "type": "box",
-            "layout": "vertical",
-            "contents": [
-              {
-                "type": "text",
-                "text": "ครบเครื่อง เรื่องไอที"
-              }
-            ]
-          }
-        }</textarea><br>
-                 <input type="button" id="button"   value="ส่งข้อความไปยังแชท" onclick="process()" class="btn btn-success" /> 
-            </div>
-          </form>
-        </div>
-        <div class="column">
-          <div class="card">
-  <div class="card-body">
-    <p>แสดงตัวอย่าง Flexก่อนส่ง </p>
-          <div class="chatbox text-center">
-            <div id="flex1">
-          </div>
-            
-                <footer class="bg-primary text-white text-center text-lg-start mt-3">
-  <!-- Copyright -->
-  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-  <div class="alert" id="message" style="font-size:0.9rem" style="display:none"></div
-  </div>
-</footer>
-
-      <script>
-        function myFunction() {
-  var x = document.getElementById("flexjson").value;
-  try {
-    document.getElementById('flex1').innerHTML = "";
-    x = JSON.parse(x)
-    console.log(x)
-    var flexdat = {}
-    flexdat["type"] = "flex";
-    flexdat["altText"] = "Flex Message";
-    flexdat["contents"] = x;
-    flex2html("flex1",flexdat);
-  }
-  catch(err){
-    console.log(err)
-    document.getElementById('flex1').innerHTML = "";
-  }
-}
-      </script>
-
-
-       <script src="https://cdn.jsdelivr.net/gh/projectwebpp/npn/sweetalert2@11.js"></script>
-  <script src="/Flex-to-html-Share/script.js"></script>
-     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>    
-  </body>
+        }
+    });
+</script>
+</body>
 </html>
