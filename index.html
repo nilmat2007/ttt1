@@ -6,16 +6,16 @@
     <title>Advanced Class Management System</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap');
 
         :root {
             --primary-color: #00c8ff;
             --secondary-color: #0080ff;
-            --bg-color: #111827;
+            --bg-color: #0f172a;
             --text-color: #e2e8f0;
-            --container-bg: #1f2937;
-            --input-bg: #374151;
-            --border-color: #4b5563;
+            --container-bg: #1e293b;
+            --input-bg: #334155;
+            --border-color: #475569;
         }
 
         * {
@@ -26,7 +26,7 @@
 
         body {
             background-color: var(--bg-color);
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Prompt', sans-serif;
             color: var(--text-color);
             line-height: 1.6;
             display: flex;
@@ -34,8 +34,8 @@
             align-items: center;
             min-height: 100vh;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 200, 255, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(0, 128, 255, 0.05) 0%, transparent 20%);
+                radial-gradient(circle at 10% 20%, rgba(0, 200, 255, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 128, 255, 0.1) 0%, transparent 20%);
             background-attachment: fixed;
         }
 
@@ -45,7 +45,7 @@
             padding: 2.5rem;
             background-color: var(--container-bg);
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -54,13 +54,14 @@
             text-align: center;
             margin-bottom: 1.5rem;
             color: var(--primary-color);
-            text-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+            font-size: 2rem;
         }
 
         .lead {
             text-align: center;
             margin-bottom: 2rem;
-            color: #9ca3af;
+            color: #94a3b8;
             font-weight: 300;
             font-size: 1.1rem;
         }
@@ -109,12 +110,12 @@
         .btn-primary {
             color: var(--bg-color);
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            box-shadow: 0 4px 6px rgba(0, 200, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 200, 255, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 8px rgba(0, 200, 255, 0.3);
+            box-shadow: 0 6px 8px rgba(0, 200, 255, 0.4);
         }
 
         .button-container {
@@ -132,7 +133,7 @@
             max-width: 100%;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0, 200, 255, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 200, 255, 0.2);
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -143,54 +144,73 @@
             color: var(--text-color);
         }
 
+        .user-info {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .user-info img {
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 10px rgba(0, 200, 255, 0.5);
+        }
+
+        .user-info p {
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
         @media (max-width: 768px) {
             .container {
                 width: 95%;
                 padding: 1.5rem;
             }
+
+            h2 {
+                font-size: 1.75rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="user-info">
+            <img id="pictureUrl" alt="User Profile" width="80" height="80"> 
+            <p id="displayName"></p>
+        </div>
 
-  <div class="container">
-    <!-- User Information Section at the Top -->
-    <div style="margin-top: 20px;">
-        <img id="pictureUrl" class="img-circle" alt="Cinque Terre" width="50" height="50"> 
-        <p id="userId"></p>
-        <center><p id="displayName"></p></center>
-        <p id="statusMessage"></p>
-    </div>
-
-    <h2>Advanced Class Management System</h2>
-    <p class="lead">เลือกกลุ่มและข้อความที่ต้องการได้เลยครับ</p>
-    <div class="form-group">
-        <label for="groupSelect">เลือกหัวข้อกลุ่มที่ต้องการ:</label>
-        <select class="form-control" id="groupSelect">
-            <option value="-1" selected>-- เลือกกลุ่ม --</option>
-            <option value="1">ONLINE</option>
-            <option value="2">TTS(จับมือทำ)</option>
-            <option value="3">ข้อมูลเพิ่มเติมอื่นๆ</option>
-            <option value="4">ข้อมูลพี่เลี้ยง</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="flexSelect">เลือกข้อความที่จะส่ง:</label>
-        <select class="form-control" id="flexSelect" disabled>
-            <option value="-1" selected>-- เลือกข้อความ --</option>
-        </select>
-    </div>
-    <div id="previewContainer" style="display: none;">
-        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Flex Message Preview:</h3>
-        <div id="bubblePreview">
-            <div id="bubbleContent"></div>
+        <h2>Advanced Class Management System</h2>
+        <p class="lead">เลือกกลุ่มและข้อความที่ต้องการได้เลยครับ</p>
+        
+        <div class="form-group">
+            <label for="groupSelect">เลือกหัวข้อกลุ่มที่ต้องการ:</label>
+            <select class="form-control" id="groupSelect">
+                <option value="-1" selected>-- เลือกกลุ่ม --</option>
+                <option value="1">ONLINE</option>
+                <option value="2">TTS(จับมือทำ)</option>
+                <option value="3">ข้อมูลเพิ่มเติมอื่นๆ</option>
+                <option value="4">ข้อมูลพี่เลี้ยง</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="flexSelect">เลือกข้อความที่จะส่ง:</label>
+            <select class="form-control" id="flexSelect" disabled>
+                <option value="-1" selected>-- เลือกข้อความ --</option>
+            </select>
+        </div>
+        
+        <div id="previewContainer" style="display: none;">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Flex Message Preview:</h3>
+            <div id="bubblePreview">
+                <div id="bubbleContent"></div>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
         </div>
     </div>
-    <div class="button-container">
-        <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
-    </div>
-</div>
-
 
     <script>
       function runApp() {
