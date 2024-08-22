@@ -3,370 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แชร์ข้อมูลการลงทะเบียน</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Advanced Class Management System</title>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://unpkg.com/@line/bot-designer@1.0.0/dist/line-bot-designer.js"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        :root {
+            --primary-color: #00c8ff;
+            --secondary-color: #0080ff;
+            --bg-color: #111827;
+            --text-color: #e2e8f0;
+            --container-bg: #1f2937;
+            --input-bg: #374151;
+            --border-color: #4b5563;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            background-color: #121212;
-            color: #FFFFFF;
-            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-color);
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 200, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 128, 255, 0.05) 0%, transparent 20%);
+            background-attachment: fixed;
         }
+
         .container {
-            max-width: 500px;
-            margin: auto;
+            width: 90%;
+            max-width: 600px;
+            padding: 2.5rem;
+            background-color: var(--container-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        h1 {
-            color: #C0A080;
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px rgba(0, 200, 255, 0.3);
         }
+
+        .lead {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #9ca3af;
+            font-weight: 300;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: var(--primary-color);
+        }
+
         .form-control {
-            background-color: #2A2A2A;
-            border: none;
-            color: #FFFFFF;
-        }
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #C0A080;
-        }
-        .btn-primary {
-            background-color: #C0A080;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #B08C60;
-        }
-        #previewModal .modal-content {
-            background-color: #1A1A1A;
-            color: #FFFFFF;
-        }
-        #previewFlexMessage {
-            background-color: #2A2A2A;
+            width: 100%;
+            padding: 0.75rem 1rem;
             border-radius: 10px;
-            padding: 20px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            color: var(--bg-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 6px rgba(0, 200, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 200, 255, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        #previewContainer {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .chatbox {
+            width: 375px;
+            height: 812px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #botdesigner {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .footer {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            padding: 0.5rem;
+            border-radius: 0 0 10px 10px;
+            margin-top: 1rem;
+        }
+
+        #message {
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 1.5rem;
+            }
         }
     </style>
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <div class="container mt-4">
-        <h1 class="text-center mb-4">ส่งการ์ดอัพเดทสถานะให้นักเรียน</h1>
-        <form id="shareForm">
-            <div class="form-group">
-                <label for="date">วันที่:</label>
-                <select class="form-control" id="date"></select>
-            </div>
-            <div class="form-group">
-                <label for="location">สถานที่:</label>
-                <select class="form-control" id="location"></select>
-            </div>
-            <div class="form-group">
-                <label for="time">เวลา:</label>
-                <select class="form-control" id="time"></select>
-            </div>
-            <div class="form-group">
-                <label for="name">ชื่อผู้ลงทะเบียน:</label>
-                <input type="text" class="form-control" id="name" placeholder="ชื่อจริง-นามสกุล(ชื่อเล่น)">
-            </div>
-            <div class="form-group">
-                <label for="status">สถานะ:</label>
-                <select class="form-control" id="status"></select>
-            </div>
-            <div class="form-group">
-                <label for="food">อาหาร:</label>
-                <input type="text" class="form-control" id="food" placeholder="อาหาร: ปกติ หรือ ยกเว้นอาหารประเภทอะไร">
-            </div>
-            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#previewModal">ตรวจสอบและส่ง</button>
-        </form>
-    </div>
-
-    <!-- Modal for Flex Message Preview -->
-    <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="previewModalLabel">ตรวจสอบข้อมูลก่อนส่ง</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+    <div class="container">
+        <h2>Advanced Class Management System</h2>
+        <p class="lead">เลือกกลุ่มและข้อความที่ต้องการได้เลยครับ</p>
+        <div class="form-group">
+            <label for="groupSelect">เลือกหัวข้อกลุ่มที่ต้องการ:</label>
+            <select class="form-control" id="groupSelect">
+                <option value="-1" selected>-- เลือกกลุ่ม --</option>
+                <option value="1">ONLINE</option>
+                <option value="2">TTS(จับมือทำ)</option>
+                <option value="3">ข้อมูลเพิ่มเติมอื่นๆ</option>
+                <option value="4">ข้อมูลพี่เลี้ยง</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="flexSelect">เลือกข้อความที่จะส่ง:</label>
+            <select class="form-control" id="flexSelect" disabled>
+                <option value="-1" selected>-- เลือกข้อความ --</option>
+            </select>
+        </div>
+        <div id="previewContainer" style="display: none;">
+            <div class="card-body">
+                <p>แสดงตัวอย่าง Flex ก่อนส่ง</p>
+                <div class="chatbox">
+                    <div id="botdesigner"></div>
                 </div>
-                <div class="modal-body">
-                    <div id="previewFlexMessage"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
-                    <button type="button" class="btn btn-primary" onclick="shareMessage()">ยืนยันและส่ง</button>
+                <div class="footer">
+                    <div id="message"></div>
                 </div>
             </div>
+        </div>
+        <div class="button-container">
+            <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
         </div>
     </div>
 
     <script>
-        function initializeLiff(myLiffId) {
-            liff.init({ liffId: myLiffId })
-                .then(() => {
-                    console.log('LIFF initialized successfully');
-                    loadSelectOptions();
-                })
-                .catch((err) => {
-                    console.error('LIFF Initialization failed ', err);
-                });
-        }
+    let flexMessages = {};
+    const LIFF_ID = "2005615503-drRxpq86"; // แทนที่ด้วย LIFF ID ของคุณ
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRVB2GDss-Zo9jaRZfSR0o8AeniyG9jv9EnJ95pXgKzsNEd0zQQlmnj4qj-WmPaPvSIg/exec"; // แทนที่ด้วย URL ของ Apps Script ที่เผยแพร่
 
-        function loadSelectOptions() {
-            $.getJSON('https://script.google.com/macros/s/AKfycby5-Bo1tVRwVsj6a0JP7BgWIN8hvMPOAa1YGkUzAjstq9ohPrdio8yRlo3xek5uEi9GIg/exec', function(data) {
-                updateSelect('date', data.date);
-                updateSelect('location', data.location);
-                updateSelect('time', data.time);
-                updateSelect('status', data.status);
-            });
-        }
-
-        function updateSelect(id, options) {
-            var select = $('#' + id);
-            select.empty();
-            select.append($('<option>').val('').text('เลือก' + select.prev('label').text().slice(0, -1)).prop('disabled', true).prop('selected', true));
-            $.each(options, function(i, option) {
-                select.append($('<option>').val(option.value).text(option.text));
-            });
-        }
-
-        function updatePreview() {
-            const date = document.getElementById('date').value;
-            const location = document.getElementById('location').value;
-            const time = document.getElementById('time').value;
-            const name = document.getElementById('name').value;
-            const status = document.getElementById('status').value;
-            const food = document.getElementById('food').value;
-
-            const previewHtml = `
-                <div class="text-center">
-                    <h5>วันที่: ${date}</h5>
-                    <h5>สถานที่: ${location}</h5>
-                    <h5>เวลา: ${time}</h5>
-                    <hr>
-                    <h5>ชื่อผู้ลงทะเบียน: ${name}</h5>
-                    <h5>สถานะ: ${status}</h5>
-                    <h5>อาหาร: ${food}</h5>
-                </div>
-            `;
-
-            document.getElementById('previewFlexMessage').innerHTML = previewHtml;
-        }
-
-        $('#previewModal').on('show.bs.modal', function () {
-            updatePreview();
+    // Initialize LIFF
+    liff.init({ liffId: LIFF_ID })
+        .then(() => {
+            console.log("LIFF Initialized");
+            fetchFlexMessages();
+        })
+        .catch((err) => {
+            console.log("LIFF Initialization failed:", err);
         });
 
-        function shareMessage() {
-            const date = document.getElementById('date').value;
-            const location = document.getElementById('location').value;
-            const time = document.getElementById('time').value;
-            const name = document.getElementById('name').value;
-            const status = document.getElementById('status').value;
-            const food = document.getElementById('food').value;
-
-            const flexMessage = {
-  "type": "bubble",
-  "size": "giga",
-  "header": {
-    "type": "box",
-    "layout": "vertical",
-    "contents": [
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "text",
-            "text": "ขอแสดงความยินดีต้อนรับเข้าสู่",
-            "color": "#C0A080",
-            "align": "center",
-            "size": "xs",
-            "weight": "bold"
-          },
-          {
-            "type": "text",
-            "text": "คลาสเรียน TikTok Shop\nครูส้มโอ ส่งออก AEC",
-            "weight": "bold",
-            "size": "lg",
-            "align": "center",
-            "color": "#FFFFFF",
-            "margin": "md",
-            "wrap": true
-          }
-        ]
-      }
-    ],
-    "paddingAll": "20px",
-    "backgroundColor": "#1A1A1A",
-    "paddingTop": "22px",
-    "paddingBottom": "22px"
-  },
-  "hero": {
-    "type": "image",
-    "url": "https://lh3.googleusercontent.com/d/11YT2lfYzCPB954v3OIGByeUQLwX59o0j",
-    "size": "full",
-    "aspectRatio": "20:13",
-    "aspectMode": "cover"
-  },
-  "body": {
-    "type": "box",
-    "layout": "vertical",
-    "contents": [
-      {
-        "type": "text",
-        "text": date,
-        "size": "sm",
-        "color": "#FFFFFF",
-        "margin": "md",
-        "align": "center"
-      },
-      {
-        "type": "text",
-        "text": location,
-        "size": "sm",
-        "color": "#FFFFFF",
-        "margin": "md",
-        "align": "center"
-      },
-      {
-        "type": "text",
-        "text": time,
-        "size": "sm",
-        "color": "#FFFFFF",
-        "margin": "md",
-        "align": "center"
-      },
-      {
-        "type": "separator",
-        "margin": "xl",
-        "color": "#C0A080"
-      },
-      {
-        "type": "box",
-        "layout": "horizontal",
-        "contents": [
-          {
-            "type": "text",
-            "text": name,
-            "size": "md",
-            "color": "#FFFFFF",
-            "weight": "bold",
-            "wrap": true,
-            "align": "center"
-          }
-        ],
-        "margin": "xl"
-      },
-      {
-        "type": "separator",
-        "margin": "xl",
-        "color": "#C0A080"
-      },
-      {
-        "type": "box",
-        "layout": "horizontal",
-        "contents": [
-          {
-            "type": "text",
-            "text": "สถานะ:",
-            "size": "lg",
-            "color": "#FFFFFF",
-            "weight": "bold",
-            "wrap": true,
-            "align": "end",
-            "offsetTop": "1px",
-            "flex": 1,
-            "offsetStart": "xs"
-          },
-          {
-            "type": "text",
-            "text": status,
-            "size": "lg",
-            "color": "#C0A080",
-            "align": "end",
-            "weight": "bold",
-            "offsetTop": "-1px"
-          },
-          {
-            "type": "image",
-            "url": "https://bucket.ex10.tech/images/fa432e85-5a5b-11ef-ab4d-0242ac12000e/originalContentUrl.png",
-            "aspectMode": "cover",
-            "aspectRatio": "1:1",
-            "size": "xxs",
-            "offsetStart": "lg",
-            "offsetTop": "none",
-            "animated": true,
-            "offsetBottom": "none",
-            "align": "start"
-          }
-        ],
-        "margin": "xl",
-        "offsetTop": "none"
-      },
-      {
-        "type": "separator",
-        "margin": "xxl",
-        "color": "#C0A080"
-      },
-      {
-        "type": "box",
-        "layout": "horizontal",
-        "contents": [
-          {
-            "type": "text",
-            "text": "อาหาร: ",
-            "size": "sm",
-            "color": "#C0A080",
-            "flex": 1,
-            "align": "end",
-            "offsetEnd": "5px"
-          },
-          {
-            "type": "text",
-            "text": food,
-            "size": "sm",
-            "color": "#FFFFFF",
-            "align": "start",
-            "flex": 1,
-            "offsetStart": "5px",
-            "offsetTop": "1px"
-          }
-        ],
-        "margin": "md",
-        "offsetTop": "xs"
-      }
-    ],
-    "backgroundColor": "#2A2A2A",
-    "paddingAll": "20px"
-  },
-  "styles": {
-    "footer": {
-      "separator": false
-    }
-  }
-};
-
-            liff.shareTargetPicker([
-                {
-                    type: "flex",
-                    altText: "ข้อมูลการลงทะเบียน",
-                    contents: flexMessage
-                }
-            ])
-            .then(() => {
-                console.log('Message sent');
-                liff.closeWindow();
+    function fetchFlexMessages() {
+        fetch(APPS_SCRIPT_URL)
+            .then(response => response.json())
+            .then(data => {
+                flexMessages = data;
+                console.log("Fetched Flex Messages:", flexMessages);
+                document.getElementById('groupSelect').disabled = false;
+                document.getElementById('groupSelect').dispatchEvent(new Event('change'));
             })
-            .catch((err) => {
-                console.error('Error sending message: ', err);
+            .catch(error => {
+                console.error('Error:', error);
+                alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
             });
+    }
+
+    document.getElementById('groupSelect').addEventListener('change', () => {
+        const selectedGroup = document.getElementById('groupSelect').value;
+        const flexSelect = document.getElementById('flexSelect');
+        flexSelect.innerHTML = '<option value="-1" selected>-- เลือกข้อความ --</option>';
+
+        if (selectedGroup > 0) {
+            const groupMessages = flexMessages['group' + selectedGroup] || [];
+            groupMessages.forEach((flexMessage, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.text = `${flexMessage.id}: ${flexMessage.altText}`;
+                flexSelect.add(option);
+            });
+            flexSelect.disabled = false;
+        } else {
+            flexSelect.disabled = true;
+            document.getElementById('previewContainer').style.display = 'none';
+        }
+    });
+
+    document.getElementById('flexSelect').addEventListener('change', updatePreview);
+
+    function updatePreview() {
+        const selectedGroup = document.getElementById('groupSelect').value;
+        const selectedIndex = document.getElementById('flexSelect').value;
+
+        if (selectedIndex >= 0) {
+            const groupMessages = flexMessages['group' + selectedGroup] || [];
+            const flexMessage = groupMessages[selectedIndex];
+            displayFlexMessagePreview(flexMessage);
+            document.getElementById('shareBtn').disabled = false;
+        } else {
+            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('shareBtn').disabled = true;
+        }
+    }
+
+    function displayFlexMessagePreview(flexMessage) {
+        const previewContainer = document.getElementById('previewContainer');
+        const botdesignerElement = document.getElementById('botdesigner');
+
+        // สร้าง simulator
+        if (!window.botdesigner) {
+            window.botdesigner = new LineBotDesigner.Simulator({
+                delegate: {
+                    getFlexMessage: () => flexMessage.contents
+                },
+                mainContainerId: 'botdesigner'
+            });
+        } else {
+            // อัปเดต Flex Message ถ้า simulator ถูกสร้างแล้ว
+            window.botdesigner.updateFlexMessage(flexMessage.contents);
         }
 
-        // เริ่มต้นโปรแกรมโดยเรียกใช้ initializeLiff
-        initializeLiff('2005615503-drRxpq86');
+        previewContainer.style.display = 'block';
+        document.getElementById('message').textContent = "Message ready for preview.";
+    }
+
+    document.getElementById('shareBtn').addEventListener('click', () => {
+        const selectedGroup = document.getElementById('groupSelect').value;
+        const selectedIndex = document.getElementById('flexSelect').value;
+        if (selectedIndex >= 0) {
+            const groupMessages = flexMessages['group' + selectedGroup] || [];
+            const flexMessage = groupMessages[selectedIndex];
+            if (flexMessage && flexMessage.contents) {
+                liff.shareTargetPicker([{
+                    type: 'flex',
+                    altText: flexMessage.altText,
+                    contents: flexMessage.contents
+                }])
+                .then(() => {
+                    console.log("Message shared");
+                })
+                .catch(error => {
+                    console.error("Error sharing message:", error);
+                    alert('ไม่สามารถแชร์ข้อความได้');
+                });
+            } else {
+                alert('ข้อความที่เลือกไม่ถูกต้อง');
+            }
+        }
+    });
     </script>
 </body>
 </html>
