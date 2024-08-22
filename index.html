@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Class Management System</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script src="https://unpkg.com/flex2html/flex2html.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/projectwebpp/npn/sweetalert2@11.js"></script>
     <script src="/Flex-to-html-Share/script.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.1/mdb.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
@@ -125,34 +126,26 @@
             margin-top: 2rem;
         }
 
-        .card {
-            background-color: var(--container-bg);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-top: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-body {
-            color: var(--text-color);
-        }
-
-        .chatbox {
-            background-color: var(--input-bg);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-top: 1rem;
-            min-height: 200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         @media (max-width: 768px) {
             .container {
                 width: 95%;
                 padding: 1.5rem;
             }
+        }
+        .column {
+            margin-top: 20px;
+        }
+        .card {
+            background-color: var(--container-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .chatbox {
+            background-color: var(--input-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -176,11 +169,13 @@
                 <option value="-1" selected>-- เลือกข้อความ --</option>
             </select>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <p>แสดงตัวอย่าง Flexก่อนส่ง</p>
-                <div class="chatbox text-center">
-                    <div id="flex1"></div>
+        <div class="column">
+            <div class="card">
+                <div class="card-body">
+                    <p>แสดงตัวอย่าง Flexก่อนส่ง</p>
+                    <div class="chatbox text-center">
+                        <div id="flex1"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -234,23 +229,17 @@
             flexSelect.disabled = false;
         } else {
             flexSelect.disabled = true;
-            document.getElementById('flex1').innerHTML = "";
         }
-        updatePreview();
+        document.getElementById('flex1').innerHTML = "";
     });
 
-    document.getElementById('flexSelect').addEventListener('change', updatePreview);
-
-    function updatePreview() {
+    document.getElementById('flexSelect').addEventListener('change', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
         const selectedIndex = document.getElementById('flexSelect').value;
         const shareBtn = document.getElementById('shareBtn');
-        const flex1Element = document.getElementById('flex1');
+        shareBtn.disabled = selectedIndex < 0;
 
-        flex1Element.innerHTML = "";
-        shareBtn.disabled = true;
-
-        if (selectedGroup > 0 && selectedIndex >= 0) {
+        if (selectedIndex >= 0) {
             const groupMessages = flexMessages['group' + selectedGroup] || [];
             const flexMessage = groupMessages[selectedIndex];
             if (flexMessage && flexMessage.contents) {
@@ -260,15 +249,18 @@
                     contents: flexMessage.contents
                 };
                 flex2html("flex1", flexData);
-                shareBtn.disabled = false;
+            } else {
+                document.getElementById('flex1').innerHTML = "";
             }
+        } else {
+            document.getElementById('flex1').innerHTML = "";
         }
-    }
+    });
 
     document.getElementById('shareBtn').addEventListener('click', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
         const selectedIndex = document.getElementById('flexSelect').value;
-        if (selectedGroup > 0 && selectedIndex >= 0) {
+        if (selectedIndex >= 0) {
             const groupMessages = flexMessages['group' + selectedGroup] || [];
             const flexMessage = groupMessages[selectedIndex];
             if (flexMessage && flexMessage.contents) {
