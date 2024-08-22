@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Advanced Class Management System</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script src="https://unpkg.com/@line/bot-designer@1.0.0/dist/line-bot-designer.js"></script>
+    <script src="https://unpkg.com/flex2html/flex2html.js"></script>
+    <script src="/Flex-to-html-Share/script.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
@@ -124,37 +125,27 @@
             margin-top: 2rem;
         }
 
-        #previewContainer {
+        .card {
+            background-color: var(--container-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
             margin-top: 2rem;
-            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-body {
+            color: var(--text-color);
         }
 
         .chatbox {
-            width: 375px;
-            height: 812px;
-            margin: 0 auto;
-            overflow: hidden;
-            border-radius: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-        #botdesigner {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .footer {
-            background-color: var(--primary-color);
-            color: var(--bg-color);
-            padding: 0.5rem;
-            border-radius: 0 0 10px 10px;
+            background-color: var(--input-bg);
+            border-radius: 10px;
+            padding: 1rem;
             margin-top: 1rem;
-        }
-
-        #message {
-            font-size: 0.9rem;
-            margin-bottom: 0;
+            min-height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         @media (max-width: 768px) {
@@ -185,14 +176,11 @@
                 <option value="-1" selected>-- เลือกข้อความ --</option>
             </select>
         </div>
-        <div id="previewContainer" style="display: none;">
+        <div class="card">
             <div class="card-body">
-                <p>แสดงตัวอย่าง Flex ก่อนส่ง</p>
-                <div class="chatbox">
-                    <div id="botdesigner"></div>
-                </div>
-                <div class="footer">
-                    <div id="message"></div>
+                <p>แสดงตัวอย่าง Flexก่อนส่ง</p>
+                <div class="chatbox text-center">
+                    <div id="flex1"></div>
                 </div>
             </div>
         </div>
@@ -203,10 +191,9 @@
 
     <script>
     let flexMessages = {};
-    const LIFF_ID = "2005615503-drRxpq86"; // แทนที่ด้วย LIFF ID ของคุณ
-    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRVB2GDss-Zo9jaRZfSR0o8AeniyG9jv9EnJ95pXgKzsNEd0zQQlmnj4qj-WmPaPvSIg/exec"; // แทนที่ด้วย URL ของ Apps Script ที่เผยแพร่
+    const LIFF_ID = "2005615503-J0egQn64";
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRVB2GDss-Zo9jaRZfSR0o8AeniyG9jv9EnJ95pXgKzsNEd0zQQlmnj4qj-WmPaPvSIg/exec";
 
-    // Initialize LIFF
     liff.init({ liffId: LIFF_ID })
         .then(() => {
             console.log("LIFF Initialized");
@@ -247,8 +234,9 @@
             flexSelect.disabled = false;
         } else {
             flexSelect.disabled = true;
-            document.getElementById('previewContainer').style.display = 'none';
+            document.getElementById('flex1').innerHTML = "";
         }
+        updatePreview();
     });
 
     document.getElementById('flexSelect').addEventListener('change', updatePreview);
@@ -256,43 +244,31 @@
     function updatePreview() {
         const selectedGroup = document.getElementById('groupSelect').value;
         const selectedIndex = document.getElementById('flexSelect').value;
+        const shareBtn = document.getElementById('shareBtn');
+        const flex1Element = document.getElementById('flex1');
 
-        if (selectedIndex >= 0) {
+        flex1Element.innerHTML = "";
+        shareBtn.disabled = true;
+
+        if (selectedGroup > 0 && selectedIndex >= 0) {
             const groupMessages = flexMessages['group' + selectedGroup] || [];
             const flexMessage = groupMessages[selectedIndex];
-            displayFlexMessagePreview(flexMessage);
-            document.getElementById('shareBtn').disabled = false;
-        } else {
-            document.getElementById('previewContainer').style.display = 'none';
-            document.getElementById('shareBtn').disabled = true;
+            if (flexMessage && flexMessage.contents) {
+                const flexData = {
+                    type: "flex",
+                    altText: flexMessage.altText,
+                    contents: flexMessage.contents
+                };
+                flex2html("flex1", flexData);
+                shareBtn.disabled = false;
+            }
         }
-    }
-
-    function displayFlexMessagePreview(flexMessage) {
-        const previewContainer = document.getElementById('previewContainer');
-        const botdesignerElement = document.getElementById('botdesigner');
-
-        // สร้าง simulator
-        if (!window.botdesigner) {
-            window.botdesigner = new LineBotDesigner.Simulator({
-                delegate: {
-                    getFlexMessage: () => flexMessage.contents
-                },
-                mainContainerId: 'botdesigner'
-            });
-        } else {
-            // อัปเดต Flex Message ถ้า simulator ถูกสร้างแล้ว
-            window.botdesigner.updateFlexMessage(flexMessage.contents);
-        }
-
-        previewContainer.style.display = 'block';
-        document.getElementById('message').textContent = "Message ready for preview.";
     }
 
     document.getElementById('shareBtn').addEventListener('click', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
         const selectedIndex = document.getElementById('flexSelect').value;
-        if (selectedIndex >= 0) {
+        if (selectedGroup > 0 && selectedIndex >= 0) {
             const groupMessages = flexMessages['group' + selectedGroup] || [];
             const flexMessage = groupMessages[selectedIndex];
             if (flexMessage && flexMessage.contents) {
