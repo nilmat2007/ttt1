@@ -1,73 +1,372 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
-  <meta charset="UTF-8">
-  <title>รินรวี สอนวงค์(โค้ชตี้)</title>
-<meta name="description" content="Data base Aekket team" />
-<meta name="keywords" content="Keywords related to your webpage" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta http-equiv="cleartype" content="on">
-<meta name="apple-mobile-web-app-title" content="DATA BASE">
-<link rel="shortcut icon" type="image/png" href="https://th.bing.com/th/id/OIG3.KzjGuFmTqC.wRNFrGULu?w=1024&h=1024&rs=1&pid=ImgDetMain" />
-<link rel="apple-touch-icon" href="https://th.bing.com/th/id/OIG3.KzjGuFmTqC.wRNFrGULu?w=1024&h=1024&rs=1&pid=ImgDetMain" />
-<link rel="apple-touch-icon" sizes="72x72" href="https://th.bing.com/th/id/OIG3.KzjGuFmTqC.wRNFrGULu?w=1024&h=1024&rs=1&pid=ImgDetMain" />
-<link rel="apple-touch-icon" sizes="114x114" href="https://th.bing.com/th/id/OIG3.KzjGuFmTqC.wRNFrGULu?w=1024&h=1024&rs=1&pid=ImgDetMain" />
-
-<!-- Open Graph Meta Tags -->
-<meta property="og:title" content="รินรวี สอนวงค์(โค้ชตี้)" />
-<meta property="og:description" content="Data base Aekket team" />
-<meta property="og:image" content="https://th.bing.com/th/id/OIG3.KzjGuFmTqC.wRNFrGULu?w=1024&h=1024&rs=1&pid=ImgDetMain" />
-<meta property="og:url" content="https://nilmat2007.github.io/ty/" />
-<meta property="og:type" content="website" />
-
-<!-- Twitter Card Meta Tags -->
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="รินรวี สอนวงค์(โค้ชตี้)" />
-<meta name="twitter:description" content="Data base Aekket team" />
-<meta name="twitter:image" content="https://th.bing.com/th/id/OIG3.KzjGuFmTqC.wRNFrGULu?w=1024&h=1024&rs=1&pid=ImgDetMain" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-   #homeBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      font-size: 24px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s ease, transform 0.3s ease;
-    }
-    #homeBtn:hover {
-      background-color: #555;
-      transform: scale(1.1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แชร์ข้อมูลการลงทะเบียน</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #FFFFFF;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+        }
+        h1 {
+            color: #C0A080;
+        }
+        .form-control {
+            background-color: #2A2A2A;
+            border: none;
+            color: #FFFFFF;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #C0A080;
+        }
+        .btn-primary {
+            background-color: #C0A080;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #B08C60;
+        }
+        #previewModal .modal-content {
+            background-color: #1A1A1A;
+            color: #FFFFFF;
+        }
+        #previewFlexMessage {
+            background-color: #2A2A2A;
+            border-radius: 10px;
+            padding: 20px;
+        }
+    </style>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div>
-    <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" src="https://script.google.com/macros/s/AKfycbybWuY2PyT02nwHji8mnvQHEEtw4bgXB2yGn56naYvlx6z6rNgsHeGHtDLBSp1pZ8iG/exec"></iframe>
-    <button id="homeBtn"><i class="fas fa-home"></i></button>
-  </div>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">ส่งการ์ดอัพเดทสถานะให้นักเรียน</h1>
+        <form id="shareForm">
+            <div class="form-group">
+                <label for="date">วันที่:</label>
+                <select class="form-control" id="date"></select>
+            </div>
+            <div class="form-group">
+                <label for="location">สถานที่:</label>
+                <select class="form-control" id="location"></select>
+            </div>
+            <div class="form-group">
+                <label for="time">เวลา:</label>
+                <select class="form-control" id="time"></select>
+            </div>
+            <div class="form-group">
+                <label for="name">ชื่อผู้ลงทะเบียน:</label>
+                <input type="text" class="form-control" id="name" placeholder="ชื่อจริง-นามสกุล(ชื่อเล่น)">
+            </div>
+            <div class="form-group">
+                <label for="status">สถานะ:</label>
+                <select class="form-control" id="status"></select>
+            </div>
+            <div class="form-group">
+                <label for="food">อาหาร:</label>
+                <input type="text" class="form-control" id="food" placeholder="อาหาร: ปกติ หรือ ยกเว้นอาหารประเภทอะไร">
+            </div>
+            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#previewModal">ตรวจสอบและส่ง</button>
+        </form>
+    </div>
 
-  <script>
-    const homeBtn = document.getElementById('homeBtn');
-    const iframe = document.querySelector('iframe');
-    homeBtn.addEventListener('click', () => {
-      iframe.src = 'https://script.google.com/macros/s/AKfycbybWuY2PyT02nwHji8mnvQHEEtw4bgXB2yGn56naYvlx6z6rNgsHeGHtDLBSp1pZ8iG/exec';
-    });
-  </script>
+    <!-- Modal for Flex Message Preview -->
+    <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="previewModalLabel">ตรวจสอบข้อมูลก่อนส่ง</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="previewFlexMessage"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                    <button type="button" class="btn btn-primary" onclick="shareMessage()">ยืนยันและส่ง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function initializeLiff(myLiffId) {
+            liff.init({ liffId: myLiffId })
+                .then(() => {
+                    console.log('LIFF initialized successfully');
+                    loadSelectOptions();
+                })
+                .catch((err) => {
+                    console.error('LIFF Initialization failed ', err);
+                });
+        }
+
+        function loadSelectOptions() {
+            $.getJSON('https://script.google.com/macros/s/AKfycby5-Bo1tVRwVsj6a0JP7BgWIN8hvMPOAa1YGkUzAjstq9ohPrdio8yRlo3xek5uEi9GIg/exec', function(data) {
+                updateSelect('date', data.date);
+                updateSelect('location', data.location);
+                updateSelect('time', data.time);
+                updateSelect('status', data.status);
+            });
+        }
+
+        function updateSelect(id, options) {
+            var select = $('#' + id);
+            select.empty();
+            select.append($('<option>').val('').text('เลือก' + select.prev('label').text().slice(0, -1)).prop('disabled', true).prop('selected', true));
+            $.each(options, function(i, option) {
+                select.append($('<option>').val(option.value).text(option.text));
+            });
+        }
+
+        function updatePreview() {
+            const date = document.getElementById('date').value;
+            const location = document.getElementById('location').value;
+            const time = document.getElementById('time').value;
+            const name = document.getElementById('name').value;
+            const status = document.getElementById('status').value;
+            const food = document.getElementById('food').value;
+
+            const previewHtml = `
+                <div class="text-center">
+                    <h5>วันที่: ${date}</h5>
+                    <h5>สถานที่: ${location}</h5>
+                    <h5>เวลา: ${time}</h5>
+                    <hr>
+                    <h5>ชื่อผู้ลงทะเบียน: ${name}</h5>
+                    <h5>สถานะ: ${status}</h5>
+                    <h5>อาหาร: ${food}</h5>
+                </div>
+            `;
+
+            document.getElementById('previewFlexMessage').innerHTML = previewHtml;
+        }
+
+        $('#previewModal').on('show.bs.modal', function () {
+            updatePreview();
+        });
+
+        function shareMessage() {
+            const date = document.getElementById('date').value;
+            const location = document.getElementById('location').value;
+            const time = document.getElementById('time').value;
+            const name = document.getElementById('name').value;
+            const status = document.getElementById('status').value;
+            const food = document.getElementById('food').value;
+
+            const flexMessage = {
+  "type": "bubble",
+  "size": "giga",
+  "header": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "ขอแสดงความยินดีต้อนรับเข้าสู่",
+            "color": "#C0A080",
+            "align": "center",
+            "size": "xs",
+            "weight": "bold"
+          },
+          {
+            "type": "text",
+            "text": "คลาสเรียน TikTok Shop\nครูส้มโอ ส่งออก AEC",
+            "weight": "bold",
+            "size": "lg",
+            "align": "center",
+            "color": "#FFFFFF",
+            "margin": "md",
+            "wrap": true
+          }
+        ]
+      }
+    ],
+    "paddingAll": "20px",
+    "backgroundColor": "#1A1A1A",
+    "paddingTop": "22px",
+    "paddingBottom": "22px"
+  },
+  "hero": {
+    "type": "image",
+    "url": "https://lh3.googleusercontent.com/d/11YT2lfYzCPB954v3OIGByeUQLwX59o0j",
+    "size": "full",
+    "aspectRatio": "20:13",
+    "aspectMode": "cover"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": date,
+        "size": "sm",
+        "color": "#FFFFFF",
+        "margin": "md",
+        "align": "center"
+      },
+      {
+        "type": "text",
+        "text": location,
+        "size": "sm",
+        "color": "#FFFFFF",
+        "margin": "md",
+        "align": "center"
+      },
+      {
+        "type": "text",
+        "text": time,
+        "size": "sm",
+        "color": "#FFFFFF",
+        "margin": "md",
+        "align": "center"
+      },
+      {
+        "type": "separator",
+        "margin": "xl",
+        "color": "#C0A080"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": name,
+            "size": "md",
+            "color": "#FFFFFF",
+            "weight": "bold",
+            "wrap": true,
+            "align": "center"
+          }
+        ],
+        "margin": "xl"
+      },
+      {
+        "type": "separator",
+        "margin": "xl",
+        "color": "#C0A080"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": "สถานะ:",
+            "size": "lg",
+            "color": "#FFFFFF",
+            "weight": "bold",
+            "wrap": true,
+            "align": "end",
+            "offsetTop": "1px",
+            "flex": 1,
+            "offsetStart": "xs"
+          },
+          {
+            "type": "text",
+            "text": status,
+            "size": "lg",
+            "color": "#C0A080",
+            "align": "end",
+            "weight": "bold",
+            "offsetTop": "-1px"
+          },
+          {
+            "type": "image",
+            "url": "https://bucket.ex10.tech/images/fa432e85-5a5b-11ef-ab4d-0242ac12000e/originalContentUrl.png",
+            "aspectMode": "cover",
+            "aspectRatio": "1:1",
+            "size": "xxs",
+            "offsetStart": "lg",
+            "offsetTop": "none",
+            "animated": true,
+            "offsetBottom": "none",
+            "align": "start"
+          }
+        ],
+        "margin": "xl",
+        "offsetTop": "none"
+      },
+      {
+        "type": "separator",
+        "margin": "xxl",
+        "color": "#C0A080"
+      },
+      {
+        "type": "box",
+        "layout": "horizontal",
+        "contents": [
+          {
+            "type": "text",
+            "text": "อาหาร: ",
+            "size": "sm",
+            "color": "#C0A080",
+            "flex": 1,
+            "align": "end",
+            "offsetEnd": "5px"
+          },
+          {
+            "type": "text",
+            "text": food,
+            "size": "sm",
+            "color": "#FFFFFF",
+            "align": "start",
+            "flex": 1,
+            "offsetStart": "5px",
+            "offsetTop": "1px"
+          }
+        ],
+        "margin": "md",
+        "offsetTop": "xs"
+      }
+    ],
+    "backgroundColor": "#2A2A2A",
+    "paddingAll": "20px"
+  },
+  "styles": {
+    "footer": {
+      "separator": false
+    }
+  }
+};
+
+            liff.shareTargetPicker([
+                {
+                    type: "flex",
+                    altText: "ข้อมูลการลงทะเบียน",
+                    contents: flexMessage
+                }
+            ])
+            .then(() => {
+                console.log('Message sent');
+                liff.closeWindow();
+            })
+            .catch((err) => {
+                console.error('Error sending message: ', err);
+            });
+        }
+
+        // เริ่มต้นโปรแกรมโดยเรียกใช้ initializeLiff
+        initializeLiff('2005615503-drRxpq86');
+    </script>
 </body>
 </html>
