@@ -213,32 +213,7 @@
     </div>
 
     <script>
-      function runApp() {
-            liff.getProfile().then(profile => {
-              document.getElementById("pictureUrl").src = profile.pictureUrl;
-              document.getElementById("displayName").innerHTML = '<b>สวัสดี:</b> ' + profile.displayName;
-            }).catch(err => console.error(err));
-          }
-
-          liff.init({ liffId: "2005615503-drRxpq86" }, () => {
-            if (liff.isLoggedIn()) {
-              runApp();
-            } else {
-              liff.login();
-            }
-          }, err => console.error(err.code, error.message));
-
-          const accessToken = liff.getAccessToken();
-          if (accessToken) {
-            fetch("https://api...", {
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${accessToken}`
-              }
-            });
-          }
-          
-    let flexMessages = {};
+        let flexMessages = {};
     const LIFF_ID = "2005615503-drRxpq86"; // แทนที่ด้วย LIFF ID ของคุณ
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRVB2GDss-Zo9jaRZfSR0o8AeniyG9jv9EnJ95pXgKzsNEd0zQQlmnj4qj-WmPaPvSIg/exec"; // แทนที่ด้วย URL ของ Apps Script ที่เผยแพร่
 
@@ -266,6 +241,32 @@
                 alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
             });
     }
+      function runApp() {
+            liff.getProfile().then(profile => {
+              document.getElementById("pictureUrl").src = profile.pictureUrl;
+              document.getElementById("displayName").innerHTML = '<b>สวัสดี:</b> ' + profile.displayName;
+            }).catch(err => console.error(err));
+          }
+
+          liff.init({ liffId: "2005615503-drRxpq86" }, () => {
+            if (liff.isLoggedIn()) {
+              runApp();
+            } else {
+              liff.login();
+            }
+          }, err => console.error(err.code, error.message));
+
+          const accessToken = liff.getAccessToken();
+          if (accessToken) {
+            fetch("https://api...", {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${accessToken}`
+              }
+            });
+          }
+          
+    
 
     document.getElementById('groupSelect').addEventListener('change', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
