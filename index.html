@@ -169,6 +169,36 @@
         border-radius: 10px;
       }
     }
+    .flex-container {
+  max-width: 350px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.flex-box {
+  display: flex;
+}
+
+.flex-box.vertical {
+  flex-direction: column;
+}
+
+.flex-box.horizontal {
+  flex-direction: row;
+}
+
+.flex-text {
+  margin: 8px;
+  word-wrap: break-word;
+}
+
+.flex-image {
+  max-width: 100%;
+  height: auto;
+}
   </style>
 </head>
 
@@ -432,22 +462,27 @@
       $('#text-count').text(`(${text.length}/400)`)
     })
     $('#json').on('input', function () {
-      if ($(this).val() == '') {
-        $('#flex-show').html('<div class="text-light w-100 text-center my-3">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>')
-        return false
-      }
-      let json = getJSON(true)
-      if (json) {
-        $('#flex-show').html('')
-        flex2html('flex-show', json)
-        // get action from json tree
-        // let actions = getAction(json)
-      } else {
-        $('#flex-show').html(`<div style="color: white; font-size: 1rem; text-align: center; padding-top: 20px">
-                        Invalid JSON
-                    </div>`)
-      }
-    })
+  if ($(this).val() == '') {
+    $('#flex-show').html('<div class="text-light w-100 text-center my-3">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>')
+    return false
+  }
+  let json = getJSON(true)
+  if (json) {
+    $('#flex-show').html('')
+    try {
+      flex2html('flex-show', json.contents || json)
+    } catch (error) {
+      console.error('Error rendering Flex:', error)
+      $('#flex-show').html(`<div style="color: white; font-size: 1rem; text-align: center; padding-top: 20px">
+        Error rendering Flex. Please check your JSON structure.
+      </div>`)
+    }
+  } else {
+    $('#flex-show').html(`<div style="color: white; font-size: 1rem; text-align: center; padding-top: 20px">
+      Invalid JSON
+    </div>`)
+  }
+})
     $('#preview').click(function () {
       let flex = getJSON()
       if (flex) {
@@ -638,34 +673,99 @@
       })
     }
     function getJSON(noerror = false) {
-      let json = $('#json').val()
+  let json = $('#json').val()
 
-      try {
-        json = JSON.parse($('#json').val())
-      } catch (error) {
-        if (!noerror) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Invalid JSON'
-          })
-        }
-        return false
+  try {
+    json = JSON.parse(json)
+    if (json.type === 'flex') {
+      return json
+    } else {
+      let altText = $('#altText').val() || 'FLEX MESSAGE'
+      return {
+        type: 'flex',
+        altText: altText,
+        contents: json
       }
-      let flex
-      if (json.type != 'flex') {
-        let altText = $('#altText').val()
-        if (altText == '') altText = 'FLEX MESSAGE'
-        flex = {
-          type: 'flex',
-          altText: $('#altText').val(),
-          contents: json
-        }
-      } else {
-        flex = json
-      }
-      return flex
     }
+  } catch (error) {
+    if (!noerror) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Invalid JSON'
+      })
+    }
+    return false
+  }
+}
+
+    function flex2html(containerId, json) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+
+  function createFlexContainer(contents) {
+    const flexContainer = document.createElement('div');
+    flexContainer.className = 'flex-container';
+    
+    contents.forEach(content => {
+      if (content.type === 'box') {
+        const box = createBox(content);
+        flexContainer.appendChild(box);
+      } else if (content.type === 'text') {
+        const text = createText(content);
+        flexContainer.appendChild(text);
+      } else if (content.type === 'image') {
+        const image = createImage(content);
+        flexContainer.appendChild(image);
+      }
+      // เพิ่มเงื่อนไขสำหรับประเภทอื่นๆ ตามต้องการ
+    });
+
+    return flexContainer;
+  }
+
+  function createBox(content) {
+    const box = document.createElement('div');
+    box.className = `flex-box ${content.layout}`;
+    if (content.contents) {
+      content.contents.forEach(item => {
+        if (item.type === 'text') {
+          box.appendChild(createText(item));
+        } else if (item.type === 'image') {
+          box.appendChild(createImage(item));
+        } else if (item.type === 'box') {
+          box.appendChild(createBox(item));
+        }
+        // เพิ่มเงื่อนไขสำหรับประเภทอื่นๆ ตามต้องการ
+      });
+    }
+    return box;
+  }
+
+  function createText(content) {
+    const text = document.createElement('p');
+    text.className = 'flex-text';
+    text.textContent = content.text;
+    if (content.weight) text.style.fontWeight = content.weight;
+    if (content.size) text.style.fontSize = content.size;
+    if (content.color) text.style.color = content.color;
+    return text;
+  }
+
+  function createImage(content) {
+    const img = document.createElement('img');
+    img.className = 'flex-image';
+    img.src = content.url;
+    if (content.size) {
+      img.style.width = content.size;
+      img.style.height = content.size;
+    }
+    return img;
+  }
+
+  const flexMessage = createFlexContainer(json.contents.contents);
+  container.appendChild(flexMessage);
+}
 
     // function getAction(json) {
     //     Object.keys(json).forEach(function (key) {
