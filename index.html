@@ -432,22 +432,19 @@
       $('#text-count').text(`(${text.length}/400)`)
     })
     $('#json').on('input', function () {
-      if ($(this).val() == '') {
-        $('#flex-show').html('<div class="text-light w-100 text-center my-3">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>')
-        return false
-      }
-      let json = getJSON(true)
-      if (json) {
-        $('#flex-show').html('')
-        flex2html('flex-show', json)
-        // get action from json tree
-        // let actions = getAction(json)
-      } else {
-        $('#flex-show').html(`<div style="color: white; font-size: 1rem; text-align: center; padding-top: 20px">
-                        Invalid JSON
-                    </div>`)
-      }
-    })
+  if ($(this).val() == '') {
+    $('#flex-show').html('<div class="text-light w-100 text-center my-3">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>');
+    return false;
+  }
+  let json = getJSON(true);
+  if (json) {
+    $('#flex-show').html('');
+    flex2html('flex-show', json);
+  } else {
+    $('#flex-show').html(`<div style="color: white; font-size: 1rem; text-align: center; padding-top: 20px">Invalid JSON</div>`);
+  }
+});
+
     $('#preview').click(function () {
       let flex = getJSON()
       if (flex) {
