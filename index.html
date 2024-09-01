@@ -328,35 +328,6 @@
     }
   </script>
   <script>
-    function getJSON(parse) {
-      try {
-        return JSON.parse($('#json').val());
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function flex2html(elementId, json) {
-      // แสดงตัวอย่าง JSON ที่ได้ในรูปแบบที่สมบูรณ์
-      let element = $('#' + elementId);
-      element.html('<pre>' + JSON.stringify(json, null, 2) + '</pre>');
-    }
-
-    $('#json').on('input', function () {
-      let json = getJSON(true);
-      if (!$(this).val()) {
-        $('#flex-show').html('<div class="placeholder-message">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>');
-        return false;
-      }
-      if (json) {
-        $('#flex-show').html('');
-        flex2html('flex-show', json);
-      } else {
-        $('#flex-show').html('<div class="error-message">Invalid JSON</div>');
-      }
-    });
-  </script>
-  <script>
     const EXPIRE_USERS = [
       'U026ec80e42049561bd41cf92d4c55955',
       'U5fb67c286549e2eec9ff7f67e9c15690',
