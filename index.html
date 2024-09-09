@@ -239,28 +239,55 @@
         });
 
     function runApp() {
-        liff.getProfile().then(profile => {
-            document.getElementById("pictureUrl").src = profile.pictureUrl;
-            document.getElementById("displayName").innerHTML = '<b>ยินดีต้อนรับคุณ:</b> ' + profile.displayName;
-        }).catch(err => console.error(err));
+            $.get(APPS_SCRIPT_URL + "?opt=groups", function (data) {
+                console.log("🚀 !! data:", data)
+                data.groups.forEach((group, index) => {
+                    $('#groupSelect').append(`<option value="${group.name}">${group.name}</option>`);
+                });
+                $('#groupSelect').on('change', () => {
+                    const selectedGroup = $('#groupSelect').val();
+                    const flexSelect = $('#flexSelect');
+                    flexSelect.html('<option value="-1" selected>-- เลือกข้อความ --</option>');
+                    $('#previewContainer').hide();
+                    $('#flex-show').html('');
+                    if (flexMessages[selectedGroup]) {
+                        const groupMessages = flexMessages[selectedGroup] || [];
+                        groupMessages.forEach((flexMessage, index) => {
+                            flexSelect.append('<option value="' + index + '">' + flexMessage.altText + '</option>');
+                        });
+                        flexSelect.prop('disabled', false);
+                    } else {
+                       
+                        flexSelect.prop('disabled', true);
+                        $('#previewContainer').hide();
+                    }
+                });
 
-        fetchFlexMessages(); // Load Flex Messages after LIFF is initialized
-    }
-
-    function fetchFlexMessages() {
-        fetch(APPS_SCRIPT_URL)
-            .then(response => response.json())
-            .then(data => {
-                flexMessages = data;
-                console.log("Fetched Flex Messages:", flexMessages);
-                document.getElementById('groupSelect').disabled = false;
-                document.getElementById('groupSelect').dispatchEvent(new Event('change'));
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
+                $('#flexSelect').on('change', updatePreview);
             });
-    }
+            liff.getProfile().then(profile => {
+                document.getElementById("pictureUrl").src = profile.pictureUrl;
+                document.getElementById("displayName").innerHTML = '<b>ยินดีต้อนรับคุณ:</b> ' + profile.displayName;
+            }).catch(err => console.error(err));
+
+            fetchFlexMessages(); // Load Flex Messages after LIFF is initialized
+        }
+
+        function fetchFlexMessages() {
+            fetch(APPS_SCRIPT_URL)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("🚀 !! data:", data)
+                    flexMessages = data;
+                    console.log("Fetched Flex Messages:", flexMessages);
+                    document.getElementById('groupSelect').disabled = false;
+                    document.getElementById('groupSelect').dispatchEvent(new Event('change'));
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
+                });
+        }
 
     document.getElementById('groupSelect').addEventListener('change', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
@@ -356,29 +383,29 @@
     }
 
     document.getElementById('shareBtn').addEventListener('click', () => {
-        const selectedGroup = document.getElementById('groupSelect').value;
-        const selectedIndex = document.getElementById('flexSelect').value;
-        if (selectedIndex >= 0) {
-            const groupMessages = flexMessages['group' + selectedGroup] || [];
-            const flexMessage = groupMessages[selectedIndex];
-            if (flexMessage && flexMessage.contents) {
-                liff.shareTargetPicker([{
-                    type: 'flex',
-                    altText: flexMessage.altText,
-                    contents: flexMessage.contents
-                }])
-                .then(() => {
-                    console.log("Message shared");
-                })
-                .catch(error => {
-                    console.error("Error sharing message:", error);
-                    alert('ไม่สามารถแชร์ข้อความได้');
-                });
-            } else {
-                alert('ข้อความที่เลือกไม่ถูกต้อง');
+            const selectedGroup = document.getElementById('groupSelect').value;
+            const selectedIndex = document.getElementById('flexSelect').value;
+            if (flexMessages[selectedGroup]) {
+                const groupMessages = flexMessages[selectedGroup] || [];
+                const flexMessage = groupMessages[selectedIndex];
+                if (flexMessage && flexMessage.contents) {
+                    liff.shareTargetPicker([{
+                        type: 'flex',
+                        altText: flexMessage.altText,
+                        contents: flexMessage.contents
+                    }])
+                        .then(() => {
+                            console.log("Message shared");
+                        })
+                        .catch(error => {
+                            console.error("Error sharing message:", error);
+                            alert('ไม่สามารถแชร์ข้อความได้');
+                        });
+                } else {
+                    alert('ข้อความที่เลือกไม่ถูกต้อง');
+                }
             }
-        }
-    });
+        });
 </script>
 
 </body>
