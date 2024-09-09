@@ -6,10 +6,13 @@
     <title>Advanced Class Management System</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="flexhtml.js"></script>
-<link rel="stylesheet" href="flexhtml.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="flexhtml.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="flexhtml.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap');
+         @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap');
 
         :root {
             --primary-color: #00c8ff;
@@ -19,12 +22,6 @@
             --container-bg: #1e293b;
             --input-bg: #334155;
             --border-color: #475569;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
         }
 
         body {
@@ -163,6 +160,21 @@
             font-weight: 500;
         }
 
+        .modal-content {
+            background-color: var(--container-bg);
+            color: var(--text-color);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-body {
+            background-color: #849ebf;
+            background-image: url(./line\ bg.jpg);
+            background-size: contain;
+        }
+
         @media (max-width: 768px) {
             .container {
                 width: 95%;
@@ -176,61 +188,61 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="user-info">
-            <img id="pictureUrl" alt="User Profile" width="80" height="80"> 
-            <p id="displayName"></p>
-        </div>
-
-        <h2>Advanced Class Management System</h2>
-        <p class="lead">เลือกกลุ่มและข้อความที่ต้องการได้เลยครับ</p>
-        
-        <div class="form-group">
-            <label for="groupSelect">เลือกหัวข้อกลุ่มที่ต้องการ:</label>
-            <select class="form-control" id="groupSelect">
-                <option value="-1" selected>-- เลือกกลุ่ม --</option>
-                <option value="1">ONLINE</option>
-                <option value="2">TTS(จับมือทำ)</option>
-                <option value="3">ข้อมูลเพิ่มเติมอื่นๆ</option>
-                <option value="4">ข้อมูลพี่เลี้ยง</option>
-            </select>
-        </div>
-        
-        <div class="form-group">
-            <label for="flexSelect">เลือกข้อความที่จะส่ง:</label>
-            <select class="form-control" id="flexSelect" disabled>
-                <option value="-1" selected>-- เลือกข้อความ --</option>
-            </select>
-        </div>
-        
-        <div id="previewContainer" style="display: none;">
-            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Flex Message Preview:</h3>
-            <div id="flex-show"></div>
-        </div>
-        
-        <div class="button-container">
-            <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
-        </div>
+  <div class="container">
+    <div class="user-info">
+        <img id="pictureUrl" alt="User Profile" width="80" height="80"> 
+        <p id="displayName"></p>
     </div>
 
-    <!-- Modal for full preview -->
-    <div class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Full Preview</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="background-color: #849ebf;background-image: url(./line\ bg.jpg);background-size: contain;">
-                    <div class="reset-this container-fluid">
-                        <div id="flex1"></div>
-                    </div>
+    <h2>Advanced Class Management System</h2>
+    <p class="lead">เลือกกลุ่มและข้อความที่ต้องการได้เลยครับ</p>
+    
+    <div class="form-group">
+        <label for="groupSelect">เลือกหัวข้อกลุ่มที่ต้องการ:</label>
+        <select class="form-control" id="groupSelect">
+            <option value="-1" selected>-- เลือกกลุ่ม --</option>
+            <option value="1">ONLINE</option>
+            <option value="2">TTS(จับมือทำ)</option>
+            <option value="3">ข้อมูลเพิ่มเติมอื่นๆ</option>
+            <option value="4">ข้อมูลพี่เลี้ยง</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="flexSelect">เลือกข้อความที่จะส่ง:</label>
+        <select class="form-control" id="flexSelect" disabled>
+            <option value="-1" selected>-- เลือกข้อความ --</option>
+        </select>
+    </div>
+    
+    <div id="previewContainer" style="display: none;">
+        <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Flex Message Preview:</h3>
+        <div id="flex-show"></div>
+    </div>
+    
+    <div class="button-container">
+        <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
+    </div>
+</div>
+
+<!-- Modal for full preview -->
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel">Full Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="reset-this container-fluid">
+                    <div id="flex1"></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <script>
         const LIFF_ID = "2005615503-Gxyb3Yw9";
@@ -249,14 +261,19 @@
                 }
             })
             .catch((err) => {
-                console.log("LIFF Initialization failed:", err);
+                console.error("LIFF Initialization failed:", err);
+                alert("LIFF の初期化に失敗しました。ページをリロードしてください。");
             });
         
         function runApp() {
-            liff.getProfile().then(profile => {
-                document.getElementById("pictureUrl").src = profile.pictureUrl;
-                document.getElementById("displayName").innerHTML = '<b>ยินดีต้อนรับคุณ:</b> ' + profile.displayName;
-            }).catch(err => console.error(err));
+            liff.getProfile()
+                .then(profile => {
+                    document.getElementById("pictureUrl").src = profile.pictureUrl;
+                    document.getElementById("displayName").innerHTML = '<b>ยินดีต้อนรับคุณ:</b> ' + profile.displayName;
+                })
+                .catch(err => {
+                    console.error("Error getting profile:", err);
+                });
         
             fetchFlexMessages();
         }
@@ -268,15 +285,18 @@
                     flexMessages = data;
                     console.log("Fetched Flex Messages:", flexMessages);
                     document.getElementById('groupSelect').disabled = false;
-                    document.getElementById('groupSelect').dispatchEvent(new Event('change'));
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
+                    console.error('Error fetching Flex Messages:', error);
+                    alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้ กรุณาลองใหม่อีกครั้ง');
                 });
         }
         
-        document.getElementById('groupSelect').addEventListener('change', () => {
+        document.getElementById('groupSelect').addEventListener('change', updateFlexSelect);
+        document.getElementById('flexSelect').addEventListener('change', updatePreview);
+        document.getElementById('shareBtn').addEventListener('click', shareMessageAndPreview);
+        
+        function updateFlexSelect() {
             const selectedGroup = document.getElementById('groupSelect').value;
             const flexSelect = document.getElementById('flexSelect');
             flexSelect.innerHTML = '<option value="-1" selected>-- เลือกข้อความ --</option>';
@@ -294,9 +314,9 @@
                 flexSelect.disabled = true;
                 document.getElementById('previewContainer').style.display = 'none';
             }
-        });
-        
-        document.getElementById('flexSelect').addEventListener('change', updatePreview);
+            
+            document.getElementById('shareBtn').disabled = true;
+        }
         
         function updatePreview() {
             const selectedGroup = document.getElementById('groupSelect').value;
@@ -323,7 +343,11 @@
             }
         }
         
-        // Function to share message using LIFF Share Target Picker
+        function shareMessageAndPreview() {
+            shareMessage();
+            showFullPreview();
+        }
+        
         function shareMessage() {
             const selectedGroup = document.getElementById('groupSelect').value;
             const selectedIndex = document.getElementById('flexSelect').value;
@@ -331,25 +355,32 @@
                 const groupMessages = flexMessages['group' + selectedGroup] || [];
                 const flexMessage = groupMessages[selectedIndex];
                 if (flexMessage && flexMessage.contents) {
-                    liff.shareTargetPicker([{
-                        type: 'flex',
-                        altText: flexMessage.altText,
-                        contents: flexMessage.contents
-                    }])
-                    .then(() => {
-                        console.log("Message shared");
-                    })
-                    .catch(error => {
-                        console.error("Error sharing message:", error);
-                        alert('ไม่สามารถแชร์ข้อความได้');
-                    });
+                    if (liff.isApiAvailable('shareTargetPicker')) {
+                        liff.shareTargetPicker([{
+                            type: 'flex',
+                            altText: flexMessage.altText,
+                            contents: flexMessage.contents
+                        }])
+                        .then((result) => {
+                            if (result) {
+                                console.log("Message shared successfully");
+                            } else {
+                                console.log("ShareTargetPicker was closed before sharing");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error sharing message:", error);
+                            alert('ไม่สามารถแชร์ข้อความได้ กรุณาลองใหม่อีกครั้ง');
+                        });
+                    } else {
+                        alert('Share Target Picker is not available');
+                    }
                 } else {
                     alert('ข้อความที่เลือกไม่ถูกต้อง');
                 }
             }
         }
         
-        // Function to show full preview in modal
         function showFullPreview() {
             const selectedGroup = document.getElementById('groupSelect').value;
             const selectedIndex = document.getElementById('flexSelect').value;
@@ -359,17 +390,10 @@
                 if (flexMessage && flexMessage.contents) {
                     $('#flex1').html('');
                     flex2html("flex1", flexMessage.contents);
-                    $('.modal').modal('show');
+                    $('#previewModal').modal('show');
                 }
             }
         }
-        
-        // Add event listeners for share and preview buttons
-        document.getElementById('shareBtn').addEventListener('click', () => {
-            shareMessage();
-            showFullPreview();
-        });
-        </script>
-
+    </script>
 </body>
 </html>
