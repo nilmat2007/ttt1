@@ -357,30 +357,35 @@
             return html;
         }
 
-    document.getElementById('shareBtn').addEventListener('click', () => {
-        const selectedGroup = document.getElementById('groupSelect').value;
-        const selectedIndex = document.getElementById('flexSelect').value;
-        if (selectedIndex >= 0) {
-            const groupMessages = flexMessages['group' + selectedGroup] || [];
-            const flexMessage = groupMessages[selectedIndex];
-            if (flexMessage && flexMessage.contents) {
-                liff.shareTargetPicker([{
-                    type: 'flex',
-                    altText: flexMessage.altText,
+document.getElementById('shareBtn').addEventListener('click', () => {
+    const selectedGroup = document.getElementById('groupSelect').value;
+    const selectedIndex = document.getElementById('flexSelect').value;
+    
+    if (selectedIndex >= 0) {
+        const groupMessages = flexMessages['group' + selectedGroup] || [];
+        const flexMessage = groupMessages[selectedIndex];
+        
+        if (flexMessage && flexMessage.contents) {
+            // Sending Flex Message
+            liff.shareTargetPicker([
+                {
+                    type: "flex",
+                    altText: flexMessage.altText || "Flex Message",
                     contents: flexMessage.contents
-                }])
-                .then(() => {
-                    console.log("Message shared");
-                })
-                .catch(error => {
-                    console.error("Error sharing message:", error);
-                    alert('ไม่สามารถแชร์ข้อความได้');
-                });
-            } else {
-                alert('ข้อความที่เลือกไม่ถูกต้อง');
-            }
+                }
+            ])
+            .then(() => {
+                alert('ข้อความถูกส่งสำเร็จแล้ว');
+            })
+            .catch((err) => {
+                console.error('Error sending message:', err);
+                alert('การส่งข้อความล้มเหลว');
+            });
         }
-    });
+    } else {
+        alert('กรุณาเลือกข้อความก่อนส่ง');
+    }
+});
 </script>
 
 </body>
