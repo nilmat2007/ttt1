@@ -262,47 +262,66 @@
         }
     });
 
-    document.getElementById('flexSelect').addEventListener('change', () => {
-        const selectedGroup = document.getElementById('groupSelect').value;
-        const selectedFlex = document.getElementById('flexSelect').value;
-        const flexShowContainer = document.getElementById('flex-show');
-        
-        if (selectedGroup > 0 && selectedFlex >= 0) {
-            const flexMessage = flexMessages['group' + selectedGroup][selectedFlex].content;
-            // Display Flex Message as preview
-            flexShowContainer.innerHTML = ''; // Clear previous content
-            flex2html('flex-show', flexMessage);
+   document.getElementById('flexSelect').addEventListener('change', () => {
+    const selectedGroup = document.getElementById('groupSelect').value;
+    const selectedFlex = document.getElementById('flexSelect').value;
+
+    document.getElementById('shareBtn').disabled = selectedFlex < 0;
+
+    if (selectedGroup > 0 && selectedFlex >= 0) {
+        const message = flexMessages['group' + selectedGroup][selectedFlex].content;
+
+        if (message) {
+            console.log("Flex Message JSON:", message);  // ตรวจสอบ JSON ที่ได้รับ
+            document.getElementById('flex-show').innerHTML = '';  // ล้างเนื้อหาที่มีอยู่ก่อน
+            try {
+                flex2html('flex-show', message);  // แปลงและแสดง Flex Message
+            } catch (error) {
+                console.error("Error in flex2html:", error);
+                document.getElementById('flex-show').innerHTML = 
+                    '<div style="color: white; font-size: 1rem; text-align: center; padding-top: 20px">Invalid JSON</div>';
+            }
         } else {
-            // Reset preview area
-            flexShowContainer.innerHTML = '<div class="text-light w-100 text-center my-3">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>';
+            document.getElementById('flex-show').innerHTML = 
+                '<div class="text-light w-100 text-center my-3">ไม่พบเนื้อหา Flex</div>';
         }
-    });
-
-    // This will handle the input for Alt Text count
-    $('#altText').on('input', function () {
-        let text = $(this).val();
-        $('#text-count').text(`(${text.length}/400)`);
-    });
-
-    // Preview button click handler
-    $('#preview').click(function () {
-        let flex = getJSON();
-        if (flex) {
-            $('#flex1').html('');
-            flex2html("flex1", flex);
-            $('.modal').modal('show');
-        }
-    });
-
-    function getJSON(isPreview = false) {
-        try {
-            let jsonText = isPreview ? $('#json').val() : selectedFlexMessage;
-            return JSON.parse(jsonText);
-        } catch (error) {
-            console.error('Invalid JSON:', error);
-            return null;
-        }
+    } else {
+        document.getElementById('flex-show').innerHTML = 
+            '<div class="text-light w-100 text-center my-3">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>';
     }
+});
+
+        // ตัวอย่าง JSON แบบง่าย
+const sampleFlexMessage = {
+    type: "bubble",
+    hero: {
+        type: "image",
+        url: "https://example.com/sample.jpg",
+        size: "full",
+        aspectRatio: "20:13",
+        aspectMode: "cover",
+        action: {
+            type: "uri",
+            uri: "http://example.com"
+        }
+    },
+    body: {
+        type: "box",
+        layout: "vertical",
+        contents: [
+            {
+                type: "text",
+                text: "Hello, World!",
+                weight: "bold",
+                size: "xl"
+            }
+        ]
+    }
+};
+
+// ลองแสดงตัวอย่าง Flex Message โดยตรง
+flex2html('flex-show', sampleFlexMessage);
+
 
     document.getElementById('shareBtn').addEventListener('click', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
