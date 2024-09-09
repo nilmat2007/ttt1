@@ -6,7 +6,7 @@
     <title>Advanced Class Management System</title>
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script src="flexhtml.js"></script>
-  <link rel="stylesheet" href="flexhtml.css">
+    <link rel="stylesheet" href="flexhtml.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap');
 
@@ -181,21 +181,15 @@
                 <option value="-1" selected>-- เลือกข้อความ --</option>
             </select>
         </div>
-
-        <div class="col-md-5 rounded"
-     style="background-color: #849ebf;background-image: url(./line\ bg.jpg);background-size: contain;overflow: auto;">
-    <div class="reset-this">
-        <div id="flex-show" style="padding-top: 10px;">
-            <div class="text-light w-100 text-center my-3">
-                พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่
-            </div>
-        </div>
-    </div>
-</div>
-
         
         <div class="button-container">
             <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
+        </div>
+
+        <!-- Flex Message Display Area -->
+        <div id="flexMessageDisplay" class="form-group" style="margin-top: 2rem;">
+            <h3>แสดง Flex Message</h3>
+            <div id="flexMessageContent"></div>
         </div>
     </div>
 
@@ -247,6 +241,7 @@
         const selectedGroup = document.getElementById('groupSelect').value;
         const flexSelect = document.getElementById('flexSelect');
         flexSelect.innerHTML = '<option value="-1" selected>-- เลือกข้อความ --</option>';
+        document.getElementById('flexMessageContent').innerHTML = ''; // Clear previous Flex Message display
 
         if (selectedGroup > 0) {
             const groupMessages = flexMessages['group' + selectedGroup] || [];
@@ -262,66 +257,16 @@
         }
     });
 
-   document.getElementById('flexSelect').addEventListener('change', () => {
-    const selectedGroup = document.getElementById('groupSelect').value;
-    const selectedFlex = document.getElementById('flexSelect').value;
+    document.getElementById('flexSelect').addEventListener('change', () => {
+        const selectedFlex = document.getElementById('flexSelect').value;
+        document.getElementById('shareBtn').disabled = selectedFlex < 0;
 
-    document.getElementById('shareBtn').disabled = selectedFlex < 0;
-
-    if (selectedGroup > 0 && selectedFlex >= 0) {
-        const message = flexMessages['group' + selectedGroup][selectedFlex].content;
-
-        if (message) {
-            console.log("Flex Message JSON:", message);  // ตรวจสอบ JSON ที่ได้รับ
-            document.getElementById('flex-show').innerHTML = '';  // ล้างเนื้อหาที่มีอยู่ก่อน
-            try {
-                flex2html('flex-show', message);  // แปลงและแสดง Flex Message
-            } catch (error) {
-                console.error("Error in flex2html:", error);
-                document.getElementById('flex-show').innerHTML = 
-                    '<div style="color: white; font-size: 1rem; text-align: center; padding-top: 20px">Invalid JSON</div>';
-            }
-        } else {
-            document.getElementById('flex-show').innerHTML = 
-                '<div class="text-light w-100 text-center my-3">ไม่พบเนื้อหา Flex</div>';
+        // Display the selected Flex Message
+        if (selectedFlex >= 0) {
+            const selectedMessage = flexMessages['group' + document.getElementById('groupSelect').value][selectedFlex].content;
+            flex2html('flexMessageContent', JSON.parse(selectedMessage));
         }
-    } else {
-        document.getElementById('flex-show').innerHTML = 
-            '<div class="text-light w-100 text-center my-3">พื้นที่แสดงตัวอย่าง Flex จะปรากฏที่นี่</div>';
-    }
-});
-
-        // ตัวอย่าง JSON แบบง่าย
-const sampleFlexMessage = {
-    type: "bubble",
-    hero: {
-        type: "image",
-        url: "https://example.com/sample.jpg",
-        size: "full",
-        aspectRatio: "20:13",
-        aspectMode: "cover",
-        action: {
-            type: "uri",
-            uri: "http://example.com"
-        }
-    },
-    body: {
-        type: "box",
-        layout: "vertical",
-        contents: [
-            {
-                type: "text",
-                text: "Hello, World!",
-                weight: "bold",
-                size: "xl"
-            }
-        ]
-    }
-};
-
-// ลองแสดงตัวอย่าง Flex Message โดยตรง
-flex2html('flex-show', sampleFlexMessage);
-
+    });
 
     document.getElementById('shareBtn').addEventListener('click', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
