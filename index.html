@@ -206,6 +206,20 @@
                 font-size: 1.75rem;
             }
         }
+        #fullPreviewContainer {
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+        #flex1 {
+            max-width: 100%;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 200, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -240,28 +254,14 @@
             <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Flex Message Preview:</h3>
             <div id="flex-show"></div>
         </div>
+
+        <div id="fullPreviewContainer">
+            <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Full Flex Message Preview:</h3>
+            <div id="flex1"></div>
+        </div>
         
         <div class="button-container">
             <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
-        </div>
-    </div>
-
-    <!-- Modal for full preview -->
-    <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="previewModalLabel">Full Preview</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="reset-this">
-                        <div id="flex1"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -317,7 +317,7 @@
         
         document.getElementById('groupSelect').addEventListener('change', updateFlexSelect);
         document.getElementById('flexSelect').addEventListener('change', updatePreview);
-        document.getElementById('shareBtn').addEventListener('click', shareMessageAndPreview);
+        document.getElementById('shareBtn').addEventListener('click', shareMessage);
         
         function updateFlexSelect() {
             const selectedGroup = document.getElementById('groupSelect').value;
@@ -336,89 +336,76 @@
             } else {
                 flexSelect.disabled = true;
                 document.getElementById('previewContainer').style.display = 'none';
+                document.getElementById('fullPreviewContainer').style.display = 'none';
             }
             
             document.getElementById('shareBtn').disabled = true;
         }
         
         function updatePreview() {
-    const selectedGroup = document.getElementById('groupSelect').value;
-    const selectedIndex = document.getElementById('flexSelect').value;
-    const previewContainer = document.getElementById('previewContainer');
-    const flexShow = document.getElementById('flex-show');
-    const shareBtn = document.getElementById('shareBtn');
-
-    if (selectedIndex >= 0) {
-        const groupMessages = flexMessages['group' + selectedGroup] || [];
-        const flexMessage = groupMessages[selectedIndex];
-        if (flexMessage && flexMessage.contents) {
-            previewContainer.style.display = 'block';
-            flexShow.innerHTML = '';
-            flex2html('flex-show', flexMessage.contents);
-            shareBtn.disabled = false;
-        } else {
-            previewContainer.style.display = 'none';
-            shareBtn.disabled = true;
-        }
-    } else {
-        previewContainer.style.display = 'none';
-        shareBtn.disabled = true;
-    }
-}
-
-function shareMessageAndPreview() {
-    shareMessage();
-    showFullPreview();
-}
-
-function shareMessage() {
-    const selectedGroup = document.getElementById('groupSelect').value;
-    const selectedIndex = document.getElementById('flexSelect').value;
-    if (selectedIndex >= 0) {
-        const groupMessages = flexMessages['group' + selectedGroup] || [];
-        const flexMessage = groupMessages[selectedIndex];
-        if (flexMessage && flexMessage.contents) {
-            if (liff.isApiAvailable('shareTargetPicker')) {
-                liff.shareTargetPicker([{
-                    type: 'flex',
-                    altText: flexMessage.altText,
-                    contents: flexMessage.contents
-                }])
-                .then((result) => {
-                    if (result) {
-                        console.log("Message shared successfully");
-                    } else {
-                        console.log("ShareTargetPicker was closed before sharing");
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error sharing message:", error);
-                    alert('ไม่สามารถแชร์ข้อความได้ กรุณาลองใหม่อีกครั้ง');
-                });
+            const selectedGroup = document.getElementById('groupSelect').value;
+            const selectedIndex = document.getElementById('flexSelect').value;
+            const previewContainer = document.getElementById('previewContainer');
+            const fullPreviewContainer = document.getElementById('fullPreviewContainer');
+            const flexShow = document.getElementById('flex-show');
+            const flex1 = document.getElementById('flex1');
+            const shareBtn = document.getElementById('shareBtn');
+        
+            if (selectedIndex >= 0) {
+                const groupMessages = flexMessages['group' + selectedGroup] || [];
+                const flexMessage = groupMessages[selectedIndex];
+                if (flexMessage && flexMessage.contents) {
+                    previewContainer.style.display = 'block';
+                    fullPreviewContainer.style.display = 'block';
+                    flexShow.innerHTML = '';
+                    flex1.innerHTML = '';
+                    flex2html('flex-show', flexMessage.contents);
+                    flex2html('flex1', flexMessage.contents);
+                    shareBtn.disabled = false;
+                } else {
+                    previewContainer.style.display = 'none';
+                    fullPreviewContainer.style.display = 'none';
+                    shareBtn.disabled = true;
+                }
             } else {
-                alert('Share Target Picker is not available');
+                previewContainer.style.display = 'none';
+                fullPreviewContainer.style.display = 'none';
+                shareBtn.disabled = true;
             }
-        } else {
-            alert('ข้อความที่เลือกไม่ถูกต้อง');
         }
-    }
-}
-
-function showFullPreview() {
-    const selectedGroup = document.getElementById('groupSelect').value;
-    const selectedIndex = document.getElementById('flexSelect').value;
-    if (selectedIndex >= 0) {
-        const groupMessages = flexMessages['group' + selectedGroup] || [];
-        const flexMessage = groupMessages[selectedIndex];
-        if (flexMessage && flexMessage.contents) {
-            $('#flex1').html('');
-            flex2html("flex1", flexMessage.contents);
-            $('#previewModal').modal('show');
+        
+        function shareMessage() {
+            const selectedGroup = document.getElementById('groupSelect').value;
+            const selectedIndex = document.getElementById('flexSelect').value;
+            if (selectedIndex >= 0) {
+                const groupMessages = flexMessages['group' + selectedGroup] || [];
+                const flexMessage = groupMessages[selectedIndex];
+                if (flexMessage && flexMessage.contents) {
+                    if (liff.isApiAvailable('shareTargetPicker')) {
+                        liff.shareTargetPicker([{
+                            type: 'flex',
+                            altText: flexMessage.altText,
+                            contents: flexMessage.contents
+                        }])
+                        .then((result) => {
+                            if (result) {
+                                console.log("Message shared successfully");
+                            } else {
+                                console.log("ShareTargetPicker was closed before sharing");
+                            }
+                        })
+                        .catch((error) => {
+                            console.error("Error sharing message:", error);
+                            alert('ไม่สามารถแชร์ข้อความได้ กรุณาลองใหม่อีกครั้ง');
+                        });
+                    } else {
+                        alert('Share Target Picker is not available');
+                    }
+                } else {
+                    alert('ข้อความที่เลือกไม่ถูกต้อง');
+                }
+            }
         }
-    }
-}
-
-</script>
-
+    </script>
 </body>
 </html>
