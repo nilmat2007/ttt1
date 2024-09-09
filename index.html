@@ -202,7 +202,7 @@
             </select>
         </div>
         
-        <div id="previewContainer" style="display: none;"
+          <div id="previewContainer" style="display: none;"
             <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Flex Message Preview:</h3>
             <!-- <div id="bubblePreview">
                 <div id="bubbleContent"></div>
@@ -215,13 +215,13 @@
             </div>
         </div>
         
-        <div class="button-container">
-            <button id="shareBtn" class="btn btn-primary" disabled>Share Message</button>
+         <div class="button-container">
+            <button id="shareBtn" class="btn btn-primary" disabled>ส่งข้อความ</button>
         </div>
     </div>
 
     <script>
-    const LIFF_ID = "2005615503-Gxyb3Yw9"; // แทนที่ด้วย LIFF ID ของคุณ
+    const LIFF_ID = "2005615503-J0egQn64"; // แทนที่ด้วย LIFF ID ของคุณ
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRVB2GDss-Zo9jaRZfSR0o8AeniyG9jv9EnJ95pXgKzsNEd0zQQlmnj4qj-WmPaPvSIg/exec"; // แทนที่ด้วย URL ของ Apps Script ที่เผยแพร่
     
     let flexMessages = {};
@@ -241,55 +241,28 @@
         });
 
     function runApp() {
-            $.get(APPS_SCRIPT_URL + "?opt=groups", function (data) {
-                console.log("🚀 !! data:", data)
-                data.groups.forEach((group, index) => {
-                    $('#groupSelect').append(`<option value="${group.name}">${group.name}</option>`);
-                });
-                $('#groupSelect').on('change', () => {
-                    const selectedGroup = $('#groupSelect').val();
-                    const flexSelect = $('#flexSelect');
-                    flexSelect.html('<option value="-1" selected>-- เลือกข้อความ --</option>');
-                    $('#previewContainer').hide();
-                    $('#flex-show').html('');
-                    if (flexMessages[selectedGroup]) {
-                        const groupMessages = flexMessages[selectedGroup] || [];
-                        groupMessages.forEach((flexMessage, index) => {
-                            flexSelect.append('<option value="' + index + '">' + flexMessage.altText + '</option>');
-                        });
-                        flexSelect.prop('disabled', false);
-                    } else {
-                       
-                        flexSelect.prop('disabled', true);
-                        $('#previewContainer').hide();
-                    }
-                });
+        liff.getProfile().then(profile => {
+            document.getElementById("pictureUrl").src = profile.pictureUrl;
+            document.getElementById("displayName").innerHTML = '<b>ยินดีต้อนรับคุณ:</b> ' + profile.displayName;
+        }).catch(err => console.error(err));
 
-                $('#flexSelect').on('change', updatePreview);
+        fetchFlexMessages(); // Load Flex Messages after LIFF is initialized
+    }
+
+    function fetchFlexMessages() {
+        fetch(APPS_SCRIPT_URL)
+            .then(response => response.json())
+            .then(data => {
+                flexMessages = data;
+                console.log("Fetched Flex Messages:", flexMessages);
+                document.getElementById('groupSelect').disabled = false;
+                document.getElementById('groupSelect').dispatchEvent(new Event('change'));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
             });
-            liff.getProfile().then(profile => {
-                document.getElementById("pictureUrl").src = profile.pictureUrl;
-                document.getElementById("displayName").innerHTML = '<b>ยินดีต้อนรับคุณ:</b> ' + profile.displayName;
-            }).catch(err => console.error(err));
-
-            fetchFlexMessages(); // Load Flex Messages after LIFF is initialized
-        }
-
-        function fetchFlexMessages() {
-            fetch(APPS_SCRIPT_URL)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("🚀 !! data:", data)
-                    flexMessages = data;
-                    console.log("Fetched Flex Messages:", flexMessages);
-                    document.getElementById('groupSelect').disabled = false;
-                    document.getElementById('groupSelect').dispatchEvent(new Event('change'));
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('ไม่สามารถโหลดข้อมูล Flex Messages ได้');
-                });
-        }
+    }
 
     document.getElementById('groupSelect').addEventListener('change', () => {
         const selectedGroup = document.getElementById('groupSelect').value;
@@ -313,14 +286,14 @@
 
     document.getElementById('flexSelect').addEventListener('change', updatePreview);
 
-    function updatePreview() {
-        const selectedGroup = document.getElementById('groupSelect').value;
-        const selectedIndex = document.getElementById('flexSelect').value;
-        const previewContainer = document.getElementById('previewContainer');
-        const bubbleContent = document.getElementById('bubbleContent');
-        const shareBtn = document.getElementById('shareBtn');
+  function updatePreview() {
+            const selectedGroup = document.getElementById('groupSelect').value;
+            const selectedIndex = document.getElementById('flexSelect').value;
+            const previewContainer = document.getElementById('previewContainer');
+            const bubbleContent = document.getElementById('bubbleContent');
+            const shareBtn = document.getElementById('shareBtn');
 
-        if (flexMessages[selectedGroup]) {
+            if (flexMessages[selectedGroup]) {
                 const groupMessages = flexMessages[selectedGroup] || [];
                 const flexMessage = groupMessages[selectedIndex];
                 if (flexMessage && flexMessage.contents) {
@@ -349,65 +322,65 @@
             }
         }
 
-    function createBubbleHTML(contents) {
-        let html = '';
-        if (contents.type === 'bubble') {
-            const header = contents.header || {};
-            const hero = contents.hero || {};
-            const body = contents.body || {};
-            const footer = contents.footer || {};
+        function createBubbleHTML(contents) {
+            let html = '';
+            if (contents.type === 'bubble') {
+                const header = contents.header || {};
+                const hero = contents.hero || {};
+                const body = contents.body || {};
+                const footer = contents.footer || {};
 
-            html += `<div style="background-color: ${header.backgroundColor || '#ffffff'}; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">`;
-            
-            if (hero.url) {
-                html += `<img src="${hero.url}" style="width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">`;
+                html += `<div style="background-color: ${header.backgroundColor || '#ffffff'}; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">`;
+
+                if (hero.url) {
+                    html += `<img src="${hero.url}" style="width: 100%; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">`;
+                }
+
+                if (header.contents && header.contents.length > 0) {
+                    html += `<h2 style="color: ${header.contents[0].color || '#000000'};">${header.contents[0].text}</h2>`;
+                }
+
+                if (body.contents) {
+                    body.contents.forEach(item => {
+                        html += `<p style="color: ${item.color || '#000000'};">${item.text}</p>`;
+                    });
+                }
+
+                if (footer.contents && footer.contents.length > 0) {
+                    footer.contents.forEach(item => {
+                        html += `<button style="color: ${item.color || '#000000'}; background-color: ${item.style || '#00ffff'};">${item.text}</button>`;
+                    });
+                }
+
+                html += `</div>`;
             }
-
-            if (header.contents && header.contents.length > 0) {
-                html += `<h2 style="color: ${header.contents[0].color || '#000000'};">${header.contents[0].text}</h2>`;
-            }
-
-            if (body.contents) {
-                body.contents.forEach(item => {
-                    html += `<p style="color: ${item.color || '#000000'};">${item.text}</p>`;
-                });
-            }
-
-            if (footer.contents && footer.contents.length > 0) {
-                footer.contents.forEach(item => {
-                    html += `<button style="color: ${item.color || '#000000'}; background-color: ${item.style || '#00ffff'};">${item.text}</button>`;
-                });
-            }
-
-            html += `</div>`;
+            return html;
         }
-        return html;
-    }
 
     document.getElementById('shareBtn').addEventListener('click', () => {
-            const selectedGroup = document.getElementById('groupSelect').value;
-            const selectedIndex = document.getElementById('flexSelect').value;
-            if (flexMessages[selectedGroup]) {
-                const groupMessages = flexMessages[selectedGroup] || [];
-                const flexMessage = groupMessages[selectedIndex];
-                if (flexMessage && flexMessage.contents) {
-                    liff.shareTargetPicker([{
-                        type: 'flex',
-                        altText: flexMessage.altText,
-                        contents: flexMessage.contents
-                    }])
-                        .then(() => {
-                            console.log("Message shared");
-                        })
-                        .catch(error => {
-                            console.error("Error sharing message:", error);
-                            alert('ไม่สามารถแชร์ข้อความได้');
-                        });
-                } else {
-                    alert('ข้อความที่เลือกไม่ถูกต้อง');
-                }
+        const selectedGroup = document.getElementById('groupSelect').value;
+        const selectedIndex = document.getElementById('flexSelect').value;
+        if (selectedIndex >= 0) {
+            const groupMessages = flexMessages['group' + selectedGroup] || [];
+            const flexMessage = groupMessages[selectedIndex];
+            if (flexMessage && flexMessage.contents) {
+                liff.shareTargetPicker([{
+                    type: 'flex',
+                    altText: flexMessage.altText,
+                    contents: flexMessage.contents
+                }])
+                .then(() => {
+                    console.log("Message shared");
+                })
+                .catch(error => {
+                    console.error("Error sharing message:", error);
+                    alert('ไม่สามารถแชร์ข้อความได้');
+                });
+            } else {
+                alert('ข้อความที่เลือกไม่ถูกต้อง');
             }
-        });
+        }
+    });
 </script>
 
 </body>
