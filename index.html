@@ -283,11 +283,14 @@
 
         document.getElementById('flexSelect').addEventListener('change', updatePreview);
 
-       function updatePreview() {
+function updatePreview() {
     const selectedGroup = document.getElementById('groupSelect').value;
     const selectedIndex = document.getElementById('flexSelect').value;
     const previewContainer = document.getElementById('previewContainer');
     const shareBtn = document.getElementById('shareBtn');
+
+    // Reset the previous preview content
+    document.getElementById('flex-show').innerHTML = '';
 
     if (selectedIndex >= 0) {
         const groupMessages = flexMessages['group' + selectedGroup] || [];
@@ -302,12 +305,10 @@
             });
             shareBtn.disabled = false;
         } else {
-            $('#flex-show').html('');
             previewContainer.style.display = 'none';
             shareBtn.disabled = true;
         }
     } else {
-        $('#flex-show').html('');
         previewContainer.style.display = 'none';
         shareBtn.disabled = true;
     }
