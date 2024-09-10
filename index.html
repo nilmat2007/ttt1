@@ -283,32 +283,35 @@
 
         document.getElementById('flexSelect').addEventListener('change', updatePreview);
 
-        function updatePreview() {
-            const selectedGroup = document.getElementById('groupSelect').value;
-            const selectedIndex = document.getElementById('flexSelect').value;
-            const previewContainer = document.getElementById('previewContainer');
-            const bubbleContent = document.getElementById('bubbleContent');
-            const shareBtn = document.getElementById('shareBtn');
+       function updatePreview() {
+    const selectedGroup = document.getElementById('groupSelect').value;
+    const selectedIndex = document.getElementById('flexSelect').value;
+    const previewContainer = document.getElementById('previewContainer');
+    const shareBtn = document.getElementById('shareBtn');
 
-            if (selectedIndex >= 0) {
-                const groupMessages = flexMessages['group' + selectedGroup] || [];
-                const flexMessage = groupMessages[selectedIndex];
-                if (flexMessage && flexMessage.contents) {
-                    previewContainer.style.display = 'block';
-                    $('#flex-show').html('');
-                    flex2html('flex-show', flexMessage);
-                    shareBtn.disabled = false;
-                } else {
-                    $('#flex-show').html('');
-                    previewContainer.style.display = 'none';
-                    shareBtn.disabled = true;
-                }
-            } else {
-                $('#flex-show').html('');
-                previewContainer.style.display = 'none';
-                shareBtn.disabled = true;
-            }
+    if (selectedIndex >= 0) {
+        const groupMessages = flexMessages['group' + selectedGroup] || [];
+        const flexMessage = groupMessages[selectedIndex];
+        if (flexMessage && flexMessage.contents) {
+            previewContainer.style.display = 'block';
+            // การแสดงตัวอย่าง Flex Message แบบใหม่
+            flex2html('flex-show', {
+                type: "flex",
+                altText: flexMessage.altText || "Flex Message",
+                contents: flexMessage.contents
+            });
+            shareBtn.disabled = false;
+        } else {
+            $('#flex-show').html('');
+            previewContainer.style.display = 'none';
+            shareBtn.disabled = true;
         }
+    } else {
+        $('#flex-show').html('');
+        previewContainer.style.display = 'none';
+        shareBtn.disabled = true;
+    }
+}
 
         document.getElementById('shareBtn').addEventListener('click', () => {
             const selectedGroup = document.getElementById('groupSelect').value;
